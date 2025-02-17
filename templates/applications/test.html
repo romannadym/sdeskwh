@@ -1,0 +1,10 @@
+{% load static %}
+<form method="POST" enctype="multipart/form-data" action="{% url 'add-app-docs-api' 160555 %}">
+<p>
+  <input type="file" name="documents"></p>
+<p><input type="file" name="documents"></p></p>
+  <button>Отправить</button>
+</form>
+{% block pagescripts %}
+<script type="module" src="{% static 'js/test.js' %}"></script>
+{% endblock %}

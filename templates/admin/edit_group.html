@@ -1,0 +1,59 @@
+{% extends 'admin/menu.html' %}
+{% load static %}
+{% block title %}Администрирование{% endblock title %}
+{% block pagecss %}
+  {% if search %}
+    <link rel="stylesheet" type="text/css" href="{% static 'django_select2/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'django_select2/django_select2.css' %}">
+  {% endif %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/edit_user.css' %}">
+{% endblock %}
+{% block page-title %}Редактирование{% endblock page-title %}
+{% block admin-content %}
+  <div class="justify-center">
+    <div class="form">
+      {% if delete_link %}
+        <div class="justify-right">
+          <a class="btn red-btn" href="{% url delete_link form.instance.id %}">Удалить</a>
+        </div>
+      {% endif %}
+      <form method="{% if method %}{{ method }}{% else %}POST{% endif %}" action="{{ action }}">
+        {% csrf_token %}
+        <div>
+          <div>
+            {{ form.name.label_tag }}
+            {{ form.name.errors }}
+            {{ form.name }}
+          </div>
+          <div>
+            {{ form.permissions.label_tag }}
+            {{ form.permissions.errors }}
+            <div class="scroll-y h-300">
+              <ul id="permissions">
+                {% for permission in permissions %}
+                  <li>
+                    <input type="checkbox" name="permission-{{ permission.id }}" {% if permission.contains %}checked="checked"{% endif %}> {{ permission.application }} | {{ permission.name }}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="justify-center">
+          <button type="submit" class="btn dark-btn">Отправить</button>
+          <a href="{% url link %}" class="btn light-btn">Отмена</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock admin-content %}
+{% block pagescripts %}
+{% comment %}<script type="text/javascript" src="{% static 'js/admin/edit_choices.js' %}"></script>{% endcomment %}
+<script type="module" src="{% static 'js/admin/edit_group.js' %}"></script>
+{% if search %}
+  <script src="{% static 'django_select2/jquery.min.js' %}"></script>
+  <script src="{% static 'django_select2/select2.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'django_select2/django_select2.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/forms/search.js' %}"></script>
+{% endif %}
+{% endblock pagescripts %}

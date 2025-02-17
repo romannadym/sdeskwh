@@ -1,0 +1,269 @@
+{% load i18n %}
+
+{% if app_list %}
+<div class="module">
+  <table>
+    <caption>
+      <a class="section" title="Модели в приложении Оборудование">Оборудование</a>
+    </caption>
+    <tr class="{% if '/admin/applications/equipmentmodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/equipmentmodel/"{% if '/admin/applications/equipmentmodel/' in request.path %} aria-current="page"{% endif %}>Список оборудования</a></th>
+      <td></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/equipmentmodel/" class="viewlink">{% translate 'View' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/installedbasemodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/installedbasemodel/"{% if '/admin/applications/installedbasemodel/' in request.path %} aria-current="page"{% endif %}>Инсталлированная база</a></th>
+      <td></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/installedbasemodel/" class="viewlink">{% translate 'View' %}</a></td>
+      {% endif %}
+    </tr>
+    {% comment %}
+    <tr class="model-brandmodel{% if '/admin/applications/brandmodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/brandmodel/"{% if '/admin/applications/brandmodel/' in request.path %} aria-current="page"{% endif %}>Бренды</a></th>
+      <td><a href="/admin/applications/brandmodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/brandmodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/modelmodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/modelmodel/"{% if '/admin/applications/modelmodel/' in request.path %} aria-current="page"{% endif %}>Модели оборудования</a></th>
+      <td><a href="/admin/applications/modelmodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/modelmodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/equipmenttypemodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/equipmenttypemodel/"{% if '/admin/applications/equipmenttypemodel/' in request.path %} aria-current="page"{% endif %}>Типы оборудования</a></th>
+      <td><a href="/admin/applications/equipmenttypemodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/equipmenttypemodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/equipmentstatusmodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/equipmentstatusmodel/"{% if '/admin/applications/equipmentstatusmodel/' in request.path %} aria-current="page"{% endif %}>Состояния оборудования</a></th>
+      <td><a href="/admin/applications/equipmentstatusmodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/equipmentstatusmodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/vendormodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/vendormodel/"{% if '/admin/applications/vendormodel/' in request.path %} aria-current="page"{% endif %}>Вендоры</a></th>
+      <td><a href="/admin/applications/vendormodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/vendormodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/providermodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/providermodel/"{% if '/admin/applications/providermodel/' in request.path %} aria-current="page"{% endif %}>Поставщики</a></th>
+      <td><a href="/admin/applications/providermodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/providermodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/supportlevelmodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/supportlevelmodel/"{% if '/admin/applications/supportlevelmodel/' in request.path %} aria-current="page"{% endif %}>Уровни поддержи</a></th>
+      <td><a href="/admin/applications/supportlevelmodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/supportlevelmodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/stockmodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/stockmodel/"{% if '/admin/applications/stockmodel/' in request.path %} aria-current="page"{% endif %}>Склады</a></th>
+      <td><a href="/admin/applications/stockmodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/stockmodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    {% endcomment %}
+  </table>
+</div>
+<div class="module">
+  <table>
+    <caption>
+      <a class="section" title="Модели в приложении Запчасти">Запчасти</a>
+    </caption>
+    <tr class="{% if '/admin/applications/sparemodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/sparemodel/"{% if '/admin/applications/sparemodel/' in request.path %} aria-current="page"{% endif %}>ЗИП</a></th>
+      <td><a href="/admin/applications/sparemodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/sparemodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/sparepartnumbermodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/sparepartnumbermodel/"{% if '/admin/applications/sparepartnumbermodel/' in request.path %} aria-current="page"{% endif %}>Список партномеров</a></th>
+      <td><a href="/admin/applications/sparepartnumbermodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/sparepartnumbermodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    {% comment %}
+    <tr class="model-brandmodel{% if '/admin/applications/brandmodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/brandmodel/"{% if '/admin/applications/brandmodel/' in request.path %} aria-current="page"{% endif %}>Бренды</a></th>
+      <td><a href="/admin/applications/brandmodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/brandmodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/sparenamemodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/sparenamemodel/"{% if '/admin/applications/sparenamemodel/' in request.path %} aria-current="page"{% endif %}>Наименование запчастей</a></th>
+      <td><a href="/admin/applications/sparenamemodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/sparenamemodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/sparetypemodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/sparetypemodel/"{% if '/admin/applications/sparetypemodel/' in request.path %} aria-current="page"{% endif %}>Типы запчастей</a></th>
+      <td><a href="/admin/applications/sparetypemodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/sparetypemodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/equipmentstatusmodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/equipmentstatusmodel/"{% if '/admin/applications/equipmentstatusmodel/' in request.path %} aria-current="page"{% endif %}>Состояния запчастей</a></th>
+      <td><a href="/admin/applications/equipmentstatusmodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/equipmentstatusmodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/providermodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/providermodel/"{% if '/admin/applications/providermodel/' in request.path %} aria-current="page"{% endif %}>Поставщики</a></th>
+      <td><a href="/admin/applications/providermodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/providermodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/stockmodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/stockmodel/"{% if '/admin/applications/stockmodel/' in request.path %} aria-current="page"{% endif %}>Склады</a></th>
+      <td><a href="/admin/applications/stockmodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/stockmodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    {% endcomment %}
+    <tr class="{% if '/admin/applications/appsparemodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/appsparemodel/"{% if '/admin/applications/appsparemodel/' in request.path %} aria-current="page"{% endif %}>История ЗИП</a></th>
+      <td></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/appsparemodel/" class="viewlink">{% translate 'View' %}</a></td>
+      {% endif %}
+    </tr>
+  </table>
+</div>
+<div class="module">
+  <table>
+    <caption>
+      <a class="section" title="Модели в приложении Договоры">Договоры</a>
+    </caption>
+    <tr class="{% if '/admin/applications/contractmodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/contractmodel/"{% if '/admin/applications/contractmodel/' in request.path %} aria-current="page"{% endif %}>Договоры</a></th>
+      <td><a href="/admin/applications/contractmodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/contractmodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/contracthistorymodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/contracthistorymodel/"{% if '/admin/applications/contracthistorymodel/' in request.path %} aria-current="page"{% endif %}>История изменений договоров</a></th>
+      <td></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/contracthistorymodel/" class="viewlink">{% translate 'View' %}</a></td>
+      {% endif %}
+    </tr>
+  </table>
+</div>
+<div class="app-applications module">
+  <table>
+    <caption>
+      <a class="section" title="Модели в приложении Заявки">Заявки</a>
+    </caption>
+    <tr class="{% if '/admin/applications/appprioritymodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/appprioritymodel/"{% if '/admin/applications/appprioritymodel/' in request.path %} aria-current="page"{% endif %}>Приоритеты заявок</a></th>
+      <td><a href="/admin/applications/appprioritymodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/appprioritymodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/statusmodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/statusmodel/"{% if '/admin/applications/statusmodel/' in request.path %} aria-current="page"{% endif %}>Статусы заявок</a></th>
+      <td><a href="/admin/applications/statusmodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/statusmodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/applications/applicationarchivemodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/applications/applicationarchivemodel/"{% if '/admin/applications/applicationarchivemodel/' in request.path %} aria-current="page"{% endif %}>Архив заявок</a></th>
+      <td></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/applications/applicationarchivemodel/" class="viewlink">{% translate 'View' %}</a></td>
+      {% endif %}
+    </tr>
+  </table>
+</div>
+<div class="app-auth module">
+  <table>
+    <caption>
+      <a class="section" title="Модели в приложении Пользователи и группы">Пользователи и группы</a>
+    </caption>
+    <tr class="model-user{% if '/admin/accounts/user/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/accounts/user/"{% if '/admin/accounts/user/' in request.path %} aria-current="page"{% endif %}>Пользователи</a></th>
+      <td><a href="/admin/accounts/user/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/accounts/user/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="model-group{% if '/admin/auth/group/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/auth/group/"{% if '/admin/auth/group/' in request.path %} aria-current="page"{% endif %}>Группы</a></th>
+      <td><a href="/admin/auth/group/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/auth/group/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="model-group{% if '/admin/accounts/organizationmodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/accounts/organizationmodel/"{% if '/admin/accounts/organizationmodel/' in request.path %} aria-current="page"{% endif %}>Организации</a></th>
+      <td><a href="/admin/accounts/organizationmodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/accounts/organizationmodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+  </table>
+</div>
+<div class="module">
+  <table>
+    <caption>
+      <a class="section" title="Модели в приложении Другое">Другое</a>
+    </caption>
+    <tr class="{% if '/admin/contacts/contactmodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/contacts/contactmodel/"{% if '/admin/contacts/contactmodel/' in request.path %} aria-current="page"{% endif %}>Контакты</a></th>
+      <td></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/contacts/contactmodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/partners/partnermodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/partners/partnermodel/"{% if '/admin/partners/partnermodel/' in request.path %} aria-current="page"{% endif %}>Сведения о партнерах</a></th>
+      <td><a href="/admin/partners/partnermodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/partners/partnermodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/services/servicemodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/services/servicemodel/"{% if '/admin/services/servicemodel/' in request.path %} aria-current="page"{% endif %}>Сведения об услугах</a></th>
+      <td><a href="/admin/services/servicemodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/services/servicemodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+    <tr class="{% if '/admin/socials/socialmodel/' in request.path %} current-model{% endif %}">
+      <th scope="row"><a href="/admin/socials/socialmodel/"{% if '/admin/socials/socialmodel/' in request.path %} aria-current="page"{% endif %}>Социальные сети</a></th>
+      <td><a href="/admin/socials/socialmodel/add/" class="addlink">{% translate 'Add' %}</a></td>
+      {% if show_changelinks %}
+      <td><a href="/admin/socials/socialmodel/" class="changelink">{% translate 'Change' %}</a></td>
+      {% endif %}
+    </tr>
+  </table>
+</div>
+{% else %}
+  <p>{% translate 'You don’t have permission to view or edit anything.' %}</p>
+{% endif %}

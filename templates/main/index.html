@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <section>
+    <div class="banner main-banner">
+      <div class="container">
+        <div class="banner-caption">
+          {% comment %}
+          <h1>ИТ ИНТЕГРАТОР</h1>
+          <p>xCloud входит в топ-25 лучших интеграторов России*</p>
+          <p>Совершенствуйте свой бизнес, используя наши решения</p>
+          {% endcomment %}
+          <div class="banner-buttons">
+            {% if user.is_authenticated %}
+              <a class="btn orange-btn" href="{% url 'api-login' %}">Выход</a>
+            {% else %}
+              <a class="btn orange-btn" href="{% url 'login' %}">Вход</a>
+            {% endif %}
+            <a class="btn" href="{% url 'add-application' %}">Открыть заявку</a>
+          </div>
+        </div>
+      <div>
+    </div>
+  </section>
+  {% comment %}
+  <section>
+    <div class="bg-grey">
+        <div class="container">
+          <div class="block">
+            <div class="block-title">
+              <h2>О компании</h2>
+              <p>xCloud входит в топ-25 лучших интеграторов России*</p>
+            </div>
+            <div class="block-content flex">
+              <div>
+                <h3>Наши специалисты сертифицированы Hewlett Packard Enterprise, Dell EMC, NetApp и Hitachi</h3>
+                <ul class="disc">
+                  <li>Высококвалифицированный персонал – благодаря обширному опыту нашей команды в мультивендорной среде, мы можем осуществлять поддержку сложной ИТ-среды, состоящей из компонентов разных производителей. Таким образом, мы можем быть единым источником поддержки под разное оборудование.</li>
+                  <li>Специализация и ориентация на конкретный вид услуг – мы осуществляем поддержку СХД, серверов и критических систем. Нашей основной и приоритетной задачей является непрерывная работа ваших систем.</li>
+                  <li>Таким образом, мы можем быть единым источником поддержки ИТ инфраструктуры.</li>
+                  <li>Гибкость при выборе пакета услуг и заключении договоров.</li>
+                </ul>
+              </div>
+              <div class="items-center">
+                <img src="{% static 'img/pics/about_company.jpg' %}">
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </section>
+  <section>
+    <div>
+        <div class="container">
+          <div class="block">
+            <div class="block-title">
+              <h2>Преимущества</h2>
+              <p>Мы постоянно изучаем современные тенденции в мире ИТ</p>
+              <p>и накапливаем экспертизу</p>
+            </div>
+            <div class="block-content flex">
+              <div>
+                <ul>
+                  <li class="flex">
+                    <div><img src="{% static 'img/icons/basic_world.png' %}" class="li-icons"></div>
+                    <div>
+                      <h3>Качество</h3>
+                      Главные наши преимущества перед вендорами - это цена и качество. Все наши работы будут стоить дешевле как минимум на 30% и будут выполнены лучшими специалистами.
+                    </div>
+                  </li>
+                  <li class="flex">
+                    <div><img src="{% static 'img/icons/weather_last_quarter.png' %}" class="li-icons"></div>
+                    <div>
+                      <h3>Поддержка</h3>
+                      Поддержка и постгарантийная поддержка оборудования, оказание консультационных услуг, ремонтов, формирование ЗИП и профилактических работ в соответствии с лучшими практиками производителей.
+                    </div>
+                  </li>
+                  <li class="flex">
+                    <div><img src="{% static 'img/icons/music_record.png' %}" class="li-icons"></div>
+                    <div>
+                      <h3>Опыт</h3>
+                      Наши специалисты имеют международные сертификаты:
+                      HPE Master ASE, HPE ASE - HP-UX, Dell EMC Proven Professional, Brocade Accredited Data Center Specialist, IBM Certified Specialist, ITIL Expert и многие другие.
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="items-center">
+                <img src="{% static 'img/pics/pros.jpg' %}">
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </section>
+  <section>
+    <div class="bg-grey">
+        <div class="container">
+          <div class="block">
+            <div class="block-title">
+              <h2>Наши партнеры</h2>
+              <p>Если вы заинтересованы стать нашим партнером, пожалуйста напишите нам</p>
+            </div>
+            <div class="block-content flex">
+              <span class="quote">“</span>
+              <div>
+              <q>Сотрудничаю с компанией xCloud более пяти лет по разным направлениям. Большое спасибо за оперативность решения задач и за детальный подход к решению наших периодических проблем.
+                С удовольствием набираю ваш номер и надеюсь на дальнейшее сотрудничество.
+              </q>
+              <p class="cite-author">Алексей Кантемиров, директор компании "Контата"</p>
+              </div>
+              </div>
+              <div class="partners">
+                {% for partner in partners %}
+                  <div class="partner"><img src="{{ partner.img.url }}" alt="{{ partner.name }}"></div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+  </section>
+{% endcomment %}
+{% endblock %}

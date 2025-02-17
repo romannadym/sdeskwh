@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <title>
+      {% block title %}
+        ИТ Интегратор
+      {% endblock title %}
+    </title>
+    <meta name="description" content="
+    {% block description %}
+      ИТ Интегратор. Покупка, установка и настройка, поддержка и ремонт оборудования
+    {% endblock description %}
+    ">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="{% static 'img/favicon/favicon.ico' %}" type="image/x-icon">
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    {% block pagecss %}{% endblock %}
+  </head>
+  <body>
+    <div id="preloader"></div>
+    <div class="wrapper">
+      <header class="header">
+        <div class="header-top-bar">
+          <div class="container">
+            <aside>
+              <nav class="top-bar">
+                <ul class="top-sidebar-right">
+                  {% if user.is_authenticated %}
+                    {% if admin or engineer %}
+                      <li><a class="btn menu-btn" href="{% url 'app-list' %}">Заявки</a></li>
+                      <li><a class="btn menu-btn" href="{% url 'articles' %}">База знаний</a></li>
+                    {% else %}
+                      <li><a class="btn menu-btn" href="{% url 'app-list' %}">Личный кабинет "{{ user.organization }}"</a></li>
+                    {% endif %}
+                    {% if admin %}
+                      <li><a class="btn menu-btn" target='_blank' href="{% url 'list-contracts' %}">Администрирование</a></li>
+                    {% endif %}
+                    <li><a class="btn menu-btn" href="{% url 'api-login' %}">Выход</a></li>
+                  {% else %}
+                    <li><a class="btn menu-btn" href="{% url 'login' %}">Вход</a></li>
+                  {% endif %}
+                </ul>
+                <ul class="top-sidebar">{% comment %}
+                  <li><a class="btn menu-btn" href="{% url 'home' %}">Главная</a></li>
+                  <li><a class="btn menu-btn" href="{% url 'services' %}">Услуги</a></li>
+                  <li><a class="btn menu-btn" href="{% url 'contacts' %}">Контакты</a></li>
+                  {% endcomment %}
+                  <li class="notification {% if not user.is_authenticated %}hidden{% endif %}">
+                    <a id="notifications">
+                      {% if new > 0 %}
+                        <div class="badge">
+                          <div class="notifications-count">{% if new < 100 %}{{ new }}{% else %}99+{% endif %}</div>
+                        </div>
+                      {% endif %}
+                    </a>
+                    {% if notifications %}
+                      <div class="notifications hidden">
+                        <div class="justify-right pb-10"><a id="read-all" class="btn small-light-btn">Прочитать все</a></div>
+                        <div class="scroll-y">
+                        <ul>
+                          <form method="POST">
+                            {% csrf_token %}
+                          {% for notification in notifications %}
+                            {% if admin or engineer %}{% url 'edit-application' notification.application.id as the_url %}{% else %}  {% url 'app-details' notification.application.id as the_url %}{% endif %}
+                            <li>
+                              {% if notification.new == '1' %}
+                                <input type="hidden" name="notification-{{ notification.id }}" value="{{ notification.id }}">
+                              {% endif %}
+                              <a href="{{ the_url }}"><p {% if notification.new == '1' %}class="new-notification"{% endif %}>Заявка № {{ notification.application.id }}. {{ notification.text }}</p><p>{{ notification.pubdate|date:'d.m.Y H:i' }}</p></a>
+                            </li>
+                          {% endfor %}
+                          </form>
+                        </ul>
+                      </div>
+                      <div>
+                    {% endif %}
+                  </li>
+                </ul>
+              </nav>
+            </aside>
+          </div>
+        </div>
+      </header>
+      <main>
+        <section>
+          <div class="container">
+            <h1 class="page-title">{% block page-title %}{% endblock page-title %}</h1>
+          </div>
+        </section>
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+
+    <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+    {% block pagescripts %}{% endblock %}
+  </body>
+</html>

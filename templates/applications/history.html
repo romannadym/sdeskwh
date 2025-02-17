@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}История заявки{% endblock title %}
+
+{% block page-title %}История заявки{% endblock page-title %}
+{% block content %}
+<section>
+  <div class="container">
+    <a class="back-link" href="{% url 'edit-application' application_id %}">Назад</a>
+    <div class="form">
+        <ul class="timeline">
+          {% for record in history %}
+            <li>
+              <div>
+                <div class="timeline-label">
+                  <p class="timeline-date">{{ record.formatted_date }}</p>
+                  {% if record.record_type == 'comment' %}
+                    <div class="menu-edit">
+                      <ul>
+                        <li>
+                          <a class="edit-link" href="{% url 'edit-comment' record.id 0 %}"></a>
+                        </li>
+                        <li>
+                          <a class="delete-item" href="{% url 'delete-comment' record.id 0 %}"></a>
+                        </li>
+                      </ul>
+                    </div>
+                  {% endif %}
+                </div>
+                {% if record.record_type == 'comment' and record.hide %}
+                  <p class="blue-text">Комментарий скрыт от пользователей</p>
+                {% endif %}
+                <p>{{ record.text|safe }}</p>
+                <p class="timeline-user">Пользователь: {{ record.author_name }}</p>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endblock content %}

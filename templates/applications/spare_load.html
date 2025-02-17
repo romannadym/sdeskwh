@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Загрузка ЗИП{% endblock title %}
+
+{% block page-title %}Загрузка ЗИП{% endblock page-title %}
+{% block content %}
+<section>
+  <div class="container">
+    <div class="justify-center">
+      <div class="form w-50">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ form }}
+          <div class="justify-center">
+            <button type="submit" class="btn dark-btn">Загрузить</button>
+            <a href="../../admin/applications/sparemodel/" class="btn light-btn">Отмена</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

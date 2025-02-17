@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Детали{% endblock title %}
+
+{% block page-title %}Заявка № {{ data.application.id }}{% endblock page-title %}
+
+{% block content %}
+<section>
+  <div class="container">
+    <a class="back-link" href="{% url 'app-list' %}">Назад</a>
+    <div class="justify-between gap-1">
+      <div class="block-content pb-40">
+        <p><b>Дата создания:</b> {{ data.application.formatted_date }}</p>
+        <p><b>Статус заявки:</b> <span id="status">{{ data.application.status_name }}</span></p>
+        {% if data.permissions.is_staff %}
+          <p><b>Приоритет заявки:</b> {{ data.application.priority_name }}</p>
+        {% endif %}
+        <p><b>Назначенный инженер:</b> {{ data.application.engineer_name }}</p>
+        <p><b>Контактные данные по заявке:</b> {% if data.application.contact_id %}{{ data.application.contact_name }} <a href="mailto:{{ data.application.contact_email }}">{{ data.application.contact_email }}</a> {{ data.application.contact_phone }}{% endif %}</p>
+        {% if data.permissions.is_staff %}
+          <p><b>Уровень поддержи:</b> {{ data.application.support_name }}</p>
+          <p><b>Вендор:</b> {{ data.application.vendor_name }}</p>
+        {% endif %}
+        <p><b>Оборудование:</b> {{ data.application.equipment_name }}</p>
+        <p><b>Описание проблемы:</b> {{ data.application.problem }}</p>
+        <p><b>Прикрепленные файлы:</b></p>
+
+        <form method="POST" enctype="multipart/form-data" class="pb-40">
+          {% csrf_token %}
+          {{ document.management_form }}
+          {% for doc in document %}
+            {% if doc.document.value %}
+              {{ doc.id }}
+              <p class="pl-30">
+                <a target="_blank" href="{% get_media_prefix %}{{ doc.document.value }}">{{ doc.name.value }}</a>
+                {{ doc.name.as_hidden }}
+                <input type="checkbox" name="{{ doc.prefix }}-DELETE" id="id_{{ doc.prefix }}-DELETE" class="hidden">
+                {{ doc.errors }}
+              </p>
+            {% endif %}
+          {% endfor %}
+          {% if data.application.status_id != 4 %}
+            <div><a id="add-doc" class="add-item"> Добавить файл <span class="red-text">(Возможна загрузка только текстовых форматов, архивов, изображений. Размер файла не должен превышать 50 Мб)</span></a></div>
+            <button type="submit" class="btn dark-btn">Сохранить</button>
+          {% endif %}
+        </form>
+        {% if not data.permissions.is_staff and data.application.status_id == 3 %}
+          <div class="pb-40">
+            <div class="info-box hidden"></div>
+            <a class="btn green-btn" id="approve">Согласовать закрытие</a>
+            <a class="btn light-btn" id="deny">Вернуть в работу</a>
+          </div>
+        {% endif %}
+        {% if data.application.status_id != 4 %}
+        <div class="form">
+          <form method="POST" id="comment-form" action="{% url 'add-app-comm-api' data.application.id %}">
+            <div>
+              {{ comment.text.errors }}
+              {{ comment.text.label_tag }}
+              {{ comment.text }}
+            </div>
+            <div class="justify-center">
+              <button type="submit" class="btn dark-btn">Отправить</button>
+            </div>
+          </form>
+        </div>
+        {% endif %}
+      </div>
+      {% if data.history %}
+      <div class="form pb-40 w-40">
+          <ul class="timeline">
+            {% for record in data.history %}
+              <li>
+                <div>
+                  <p class="timeline-date">{{ record.formatted_date }}</p>
+                  <p>{{ record.text|safe }}</p>
+                  <p class="timeline-user">Пользователь: {{ record.author_name }}</p>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="empty-doc hidden">
+      <p class="pl-30">
+        {{ document.empty_form.errors }}
+        {{ document.empty_form.id }}
+        {{ document.empty_form.name.as_hidden }}
+        {{ document.empty_form.document.errors }}
+        {{ document.empty_form.document }}
+        <a class="delete-item"></a>
+        <input type="checkbox" name="{{ document.empty_form.prefix }}-DELETE" id="id_{{ document.empty_form.prefix }}-DELETE" class="hidden">
+      </p>
+  </div>
+
+  <div id="modal-deny" class="modal">
+    <div class="modal-content">
+      <div class="modal-text">Вы уверены, что хотите вернуть заявку в работу?</div>
+      <div class="modal-buttons"><a class="btn light-btn" id="btn-deny" action="{% url 'edit-done-application-api' data.application.id 6 %}">Да</a><a class="btn light-btn" id="modal-cancel">Нет</a></div>
+    </div>
+  </div>
+
+  <div id="modal-approve" class="modal">
+    <div class="modal-content">
+      <div class="modal-text">Вы уверены, что хотите согласовать закрытие заявки?</div>
+      <div class="modal-buttons"><a class="btn light-btn" id="btn-approve" action="{% url 'edit-done-application-api' data.application.id 4 %}">Да</a><a class="btn light-btn" id="modal-cancel">Нет</a></div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
+{% block pagescripts %}
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+<script type="module" src="{% static 'js/apps_details.js' %}"></script>
+{% endblock %}

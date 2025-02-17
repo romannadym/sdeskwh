@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Список заявок{% endblock title %}
+
+{% block page-title %}{% if permissions.is_staff %}Список заявок{% else %} {% endif %}{% endblock page-title %}
+
+{% block content %}
+<section>
+  <div class="container">
+    <div class="align-right"><a class="btn light-btn" href="{% url 'add-application' %}">Открыть заявку</a></div>
+    {% if not permissions.is_staff %}
+      <div class="tabs">
+        <a id="tab-apps" class="active">Заявки</a>
+        <a id="tab-about">Общая информация</a>
+        <a id="tab-equipments">Оборудование</a>
+      </div>
+      <div class="tab-content tab-about hidden">
+        <div class="block-content">
+          <p><b>Организация:</b> {{ client.organization_name|default_if_none:'' }}</p>
+          <p><b>ФИО:</b> {{ client.fio }} <a class="btn small-light-btn" href="{% url 'change-password' 'app-list' %}">Изменить пароль</a></p>
+          <p><b>ИНН:</b> {{ client.inn|default_if_none:'' }}</p>
+          <p><b>Адрес:</b> {{ client.address|default_if_none:'' }}</p>
+          <p><b>Адрес электронной почты:</b> {{ client.email }}</p>
+          <p><b>Телефон:</b> {{ client.phone|default_if_none:'' }}</p>
+        </div>
+      </div>
+      <div class="tab-content tab-equipments hidden">
+        <div class="justify-between">
+          <a class="btn light-btn" href="{% url 'contacts-list' %}">Контакты</a>
+          <a class="btn light-btn" href="{% url 'clients-contracts-excel-api' %}">Экспортировать в Excel</a>
+        </div>
+        <div class="block-content">
+          <ul>
+            {% for contract in client.contracts %}
+              <li>
+                <a class="contract mb-10"><b>Договор № {{ contract.number }} от {{ contract.formatted_signed }} (Дата окончания действия договора: {{ contract.formatted_enddate }})</b></a>
+                <ol>
+                  {% for equip in contract.eqcontracts %}
+                    <li>
+                      <a class="contract-equip" equip="{{ equip.sn }}">{{ equip.name }}</a>
+                    </li>
+                  {% endfor %}
+                </ol>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+    <div class="tab-content tab-apps">
+    <div class="filters">
+        <input type="text" id="id_number" name="number" placeholder="Номер заявки">
+        <input type="text" id="id_pubdate" name="period" placeholder="Период создания">
+        {% if permissions.is_staff %}
+        <span class="relative">
+        <input type="text" placeholder="Приоритет заявки" readonly="true" data-target="priority_ids" class="multiple-select">
+        <ul id="priority_ids" class="multiple-select">
+          <li>
+            <input type="checkbox" value="all" checked> <a>Все</a>
+          </li>
+          {% for priority in priorities %}
+            <li>
+              <input type="checkbox" value="{{ priority.id }}"> <a>{{ priority.name }}</a>
+            </li>
+          {% endfor %}
+          <div class="justify-center mb-10"><a class="btn small-light-btn">Применить</a></div>
+        </ul>
+        </span>
+        <input type="text" id="id_organization" name="organization" placeholder="Организация">
+        {% endif %}
+        <input type="text" id="id_equipment" name="equipment" placeholder="Оборудование">
+        <span class="relative">
+          <input type="text" placeholder="Статус заявки" readonly="true" data-target="status_ids" class="multiple-select">
+          <ul id="status_ids" class="multiple-select">
+            <li>
+              <input type="checkbox" value="all" checked> <a>Все</a>
+            </li>
+            {% for status in statuses %}
+              <li>
+                <input type="checkbox" value="{{ status.id }}"> <a>{{ status.name }}</a>
+              </li>
+            {% endfor %}
+            <div class="justify-center mb-10"><a class="btn small-light-btn">Применить</a></div>
+          </ul>
+        </span>
+        {% if permissions.is_staff %}
+        <span class="relative">
+          <input type="text" placeholder="Инженер" readonly="true" data-target="engineer_ids" class="multiple-select">
+          <ul id="engineer_ids" class="multiple-select">
+            <li>
+              <input type="checkbox" value="all" checked> <a>Все</a>
+            </li>
+            {% for engineer in engineers %}
+              <li>
+                <input type="checkbox" value="{{ engineer.id }}"> <a>{{ engineer.name }}</a>
+              </li>
+            {% endfor %}
+            <div class="justify-center mb-10"><a class="btn small-light-btn">Применить</a></div>
+          </ul>
+        </span>
+        {% endif %}
+        <input type="hidden" name="page" id="id_page" value="1">
+        <input type="hidden" id="user_id" value="{{ request.user.id }}">
+    </div>
+    {% if permissions.is_staff %}
+    <div class="checkbox-filter justify-between">
+      {% if permissions.is_engineer %}
+      <p><input type="checkbox" id="id_mine" name="mine"> - назначенные мне</p>
+      {% endif %}
+      <p><input type="checkbox" id="id_opened" name="opened"> - все, кроме закрытых</p>
+      {% if permissions.is_admin %}
+        <a class="btn small-light-btn" id="export-applications">Экспортировать в Excel</a>
+      {% endif %}
+    </div>
+    {% endif %}
+    <div class="scroll-x mb-10">
+        <table id="apps-list">
+          <thead>
+            <tr>
+              <th>Идентификатор</th><th>Дата создания</th>
+              {% if permissions.is_staff %}
+              <th>Приоритет заявки</th><th>Организация</th><th>Конечный пользователь</th>
+              {% endif %}
+              <th>Оборудование</th><th>Статус заявки</th>
+              <th>Краткое описание</th>
+              {% if permissions.is_staff %}
+              <th>Назначенный инженер</th>
+              {% endif %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in applications %}
+              <tr {% if request.user.id == app.engineer_id %}class="bg-middle-grey"{% endif %}>
+                <td><a href="{% url application_link app.id %}">{{ app.id }}</a></td>
+                <td><a href="{% url application_link app.id %}">{{ app.formatted_date }}</a></td>
+                {% if permissions.is_staff %}
+                <td><a href="{% url application_link app.id %}">{{ app.priority_name }}</a></td>
+                <td><a href="{% url application_link app.id %}">{{ app.organization_name }}</a></td>
+                <td><a href="{% url application_link app.id %}">{{ app.end_user_organization_name }}</a></td>
+                {% endif %}
+                <td><a href="{% url application_link app.id %}">{{ app.equipment_name }}</a></td>
+                <td {% if app.status_id == 1 %}class="green-text"{% elif app.status_id == 4 %}class="red-text"{% endif %}>
+                  <a href="{% url application_link app.id %}">{{ app.status_name }}</a>
+                </td>
+                <td><a href="{% url application_link app.id %}">{{ app.problem|truncatechars_html:400 }}</a></td>
+                {% if permissions.is_staff %}
+                <td><a href="{% url application_link app.id %}">{{ app.engineer_name }}</a></td>
+                {% endif %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+        <ul class="pagination {% if pagination.num_pages <= 1 %}hidden{% endif %}" num_pages="{{ pagination.num_pages }}">
+          <li class="angle-double-left {% if not pagination.has_previous or pagination.page|add:-2 <= 1  %}hidden{% endif %}"></li>
+          <li class="angle-left prev {% if not pagination.has_previous %}hidden{% endif %}"></li>
+          {% for page in pagination.pages_range %}
+            {% if page <= pagination.page|add:2 and page >= pagination.page|add:-2 %}
+              <li class="page {% if forloop.counter == pagination.page %}current-page{% endif %}">{{ forloop.counter }}</li>
+            {% endif %}
+          {% endfor %}
+          <li class="angle-right next {% if not pagination.has_next %}hidden{% endif %}"></li>
+          <li class="angle-double-right {% if not pagination.has_next or pagination.page|add:2 >= pagination.num_pages %}hidden{% endif %}"></li>
+        </ul>
+      </div>
+    </div>
+</section>
+{% endblock content %}
+{% block pagescripts %}
+<script type="text/javascript" src="{% static 'js/datepicker.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/applications/apps_list.js' %}"></script>
+{% endblock %}

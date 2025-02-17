@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Контакты{% endblock title %}
+{% block description %}Ждем ваших вопросов и предложений{% endblock description %}
+
+{% block content %}
+<section>
+  <div>
+    <div class="container">
+      <div class="block first-block">
+        <div class="block-title">
+          <h2>Контакты</h2>
+          <p>Ждем ваших вопросов и предложений</p>
+        </div>
+        <div class="block-content justify-center">
+          <div>
+            {% if contacts.phone %}
+              <div class="large-text">
+                <a href="tel:{{ contacts.phone }}">{{ contacts.phone }}</a>
+              </div>
+            {% endif %}
+            <div class="block-content">
+              {% if contacts.name %}<p>{{ contacts.name }}</p>{% endif %}
+              {% if contacts.address %}<p>{{ contacts.address }}</p>{% endif %}
+              {% if contacts.code %}<p>{{ contacts.code }}</p>{% endif %}
+            </div>
+            {% if socials %}
+              <div class="socials">
+                {% for social in socials %}
+                  <a {% if social.link %}href="{{ social.link }}"{% endif %}>
+                    <img src="{{ social.img.url }}">
+                  </a>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+          <div>
+            <div id="form_error" class="info-box red-info-box hidden"></div>
+            <div id="form_message" class="info-box blue-info-box hidden"></div>
+            <div class="justify-center">
+              <form method="POST" id="git_form" class="contacts">
+                  {% csrf_token %}
+                  <div>
+                    {{ form.email }}
+                  </div>
+                  <div>
+                    {{ form.name }}
+                  </div>
+                  <div>
+                    {{ form.text }}
+                  </div>
+                  <div>
+                    <span class="smart-captcha" data-sitekey="ysc1_gODNCqG8XlLypd1euzUVQbf3krauAeLJNhLg2xql2b4d5b5a" data-hl="ru"></span>
+                  </div>
+                  <div>
+                    <button type="submit" class="btn orange-btn">Отправить</button>
+                  </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
+{% block pagescripts %}
+  <script type="text/javascript" src="{% static 'js/get_in_touch.js' %}"></script>
+  <script src="https://smartcaptcha.yandexcloud.net/captcha.js" defer></script>
+{% endblock %}

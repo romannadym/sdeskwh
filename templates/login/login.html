@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Авторизация{% endblock title %}
+
+{% block page-title %}Авторизация{% endblock page-title %}
+
+{% block content %}
+<section>
+  <div class="container">
+      <div class="justify-center">
+          <div class="form login-form">
+            <form method="POST" action="{% url 'api-login' %}">
+              {% csrf_token %}
+              <div>
+                <label>E-mail:</label>
+                <input type="text" name="email" placeholder="Введите адрес электронной почты">
+              </div>
+              <div>
+                <label>Пароль:</label>
+                <input type="password" name="password" placeholder="Введите пароль">
+              </div>
+              <p class="justify-center"><a href="{% url 'reset_password' %}">Забыли пароль?</a></p>
+              <div class="justify-center">
+                <button type="submit" class="btn dark-btn">Войти</button>
+                <a class="hidden btn" href="{{ link }}"></a>
+              </div>
+            </form>
+          </div>
+      </div>
+  </div>
+</section>
+{% endblock %}
+{% block pagescripts %}
+  <script type="module" src="{% static 'js/login/login.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <section>
+    <div class="container">
+      <div class="admin-base">
+        <ul class="list-links">
+              <li><a href="{% url 'list-contracts' %}">Контракты</a></li>
+              <li><a href="{% url 'list-spares' %}">ЗИП</a></li>
+              <li><a href="{% url 'list-equipments' %}">Оборудование</a></li>
+              <li><a>Справочники</a>
+                <ul class="list-links hidden">
+                  <li><a>ЗИП</a>
+                    <ul class="list-links">
+                      <li><a href="{% url 'list-pn' %}">Парт номера</a></li>
+                    </ul>
+                  </li>
+                  <li><a>Оборудование</a>
+                    <ul class="list-links">
+                      <li><a href="{% url 'list-types' %}">Типы</a></li>
+                      <li><a href="{% url 'list-vendors' %}">Вендоры</a></li>
+                      <li><a href="{% url 'list-brands' %}">Бренды</a></li>
+                      <li><a href="{% url 'list-models' %}">Модели</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="{% url 'list-levels' %}">Тип поддержки</a></li>
+                  <li><a href="{% url 'list-organization' %}">Организация</a></li>
+                  <li><a>Пользователи и группы</a>
+                    <ul class="list-links">
+                      <li><a href="{% url 'list-user' %}">Пользователи</a></li>
+                      <li><a href="{% url 'list-groups' %}">Группы</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+        <div>
+          {% block admin-content %}{% endblock admin-content %}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}

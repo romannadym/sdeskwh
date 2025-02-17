@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Изменение списка контактных лиц{% endblock title %}
+
+{% block page-title %}Изменение списка контактных лиц{% endblock page-title %}
+{% block content %}
+<section>
+  <div class="container">
+    <a class="back-link" href="{% url 'contacts-list' %}">Назад</a>
+    <div class="form">
+      <form method="{% if method %}{{ method }}{% else %}POST{% endif %}" action="{{ action }}">
+        {% csrf_token %}
+          <div>
+            {{ form.fio.errors }}
+            {{ form.fio.label_tag }}
+            {{ form.fio }}
+          </div>
+          <div>
+            {{ form.email.errors }}
+            {{ form.email.label_tag }}
+            {{ form.email }}
+          </div>
+          <div>
+            {{ form.phone.errors }}
+            {{ form.phone.label_tag }}
+            {{ form.phone }}
+          </div>
+        <div class="justify-center relative">
+          <button type="submit" class="btn dark-btn">Сохранить</button>
+          <a href="{% url 'contacts-list' %}" class="btn light-btn">Отмена</a>
+          {% if form.instance.id %}
+            <div class="right-from-center">
+              <a class="btn red-btn" id="delete-contact">Удалить контакт</a>
+            </div>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+  {% if not form.0 %}
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-text">Удалить информацию о "{{ form.fio.value }}"?</div>
+      <div class="modal-buttons"><a class="btn light-btn" id="modal-delete">Удалить</a><a class="btn light-btn" id="modal-cancel">Отмена</a></div>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endblock content %}
+{% block pagescripts %}
+<script type="module" src="{% static 'js/accounts/contacts.js' %}"></script>
+{% endblock %}

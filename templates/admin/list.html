@@ -1,0 +1,71 @@
+{% extends 'admin/menu.html' %}
+{% load static %}
+{% block title %}Администрирование{% endblock title %}
+{% block page-title %}{{ label }}{% endblock page-title %}
+{% block admin-content %}
+  {% if excel or links.excel_link %}
+    <div class="justify-right gap-05">
+      {% if links.import_link %}
+        <a class="btn small-light-btn" href="{% url links.import_link %}">Импорт</a>
+      {% endif %}
+      {% if depends %}
+        <a class="btn small-light-btn" href="{% url 'admin-export' excel depends %}">Экспорт</a>
+      {% else %}
+        {% if links.excel_link %}
+          <a class="btn small-light-btn" href="{% url links.excel_link %}">Экспорт</a>
+        {% else %}
+          <a class="btn small-light-btn" href="{% url 'admin-export' excel %}">Экспорт</a>
+        {% endif %}
+      {% endif %}
+
+    </div>
+  {% endif %}
+  <div class="justify-between">
+    <a class="add-item" href="{% if model %}{% url add_link %}{% else %}{% url links.add_link %}{% endif %}">Добавить</a>
+    <a class="delete-item hidden" {% if links %}href="{% url links.delete_link %}"{% endif %}> Удалить выбранные элементы</a>
+  </div>
+  <div class="scroll-x">
+  <table class="list-items">
+    <thead>
+      <tr>
+        <td class="align-center"><b>#</b></td>
+        <td class="align-center"><input type="checkbox" class="check-all" {% if model %}value="{{ model }}"{% endif %}></td>
+        {% for field in cols %}
+          <td class="align-center"><b>{{ field }}</b></td>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in items %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td class="align-center"><input type="checkbox" value="{{ item.id }}"></td>
+        {% for key, value in item.items %}
+          {% if not key == 'pk' and not key == 'id' %}
+            <td>
+              <a href="{% if model %}{% url edit_link item.id %}{% else %}{% url links.edit_link item.id %}{% endif %}">
+                {% if key == 'img' %}
+                  <img src="{{ value }}" class="h-16">
+                {% elif key == 'groups' %}
+                  {% for role in value %}
+                    {{ role }}
+                    {% if not forloop.last %}
+                      </br>
+                    {% endif %}
+                  {% endfor %}
+                {% else %}
+                  {{ value|default_if_none:'' }}
+                {% endif %}
+              </a>
+            </td>
+          {% endif %}
+        {% endfor %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock admin-content %}
+{% block pagescripts %}
+<script type="module" src="{% static 'js/admin/admin_list.js' %}"></script>
+{% endblock %}
