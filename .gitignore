@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 settings.py
 apps/main/views.py
+=======
+settings.py
+apps/main/views.py
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10

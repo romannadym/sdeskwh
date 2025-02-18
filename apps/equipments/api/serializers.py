@@ -6,7 +6,11 @@ class EquipmentsListSerializer(serializers.ModelSerializer):
     type_name = serializers.CharField(label = 'Наименование типа')
     vendor_name = serializers.CharField(label = 'Наименование вендора')
     brand_name = serializers.CharField(label = 'Наименование бренда')
+<<<<<<< HEAD
     model_name = serializers.CharField(label = 'Наименование модель')
+=======
+    model_name = serializers.CharField(label = 'Наименование модели')
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 
     class Meta:
         model = EquipmentModel

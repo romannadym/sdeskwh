@@ -6,7 +6,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
 
+<<<<<<< HEAD
 from drf_spectacular.utils import extend_schema
+=======
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, OpenApiResponse
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 
 from tempfile import NamedTemporaryFile
 
@@ -19,11 +23,25 @@ from equipments.api.serializers import *
 
 from equipments.models import EquipmentModel, TypeModel, VendorModel, BrandModel, ModelModel
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Оборудование (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EquipmentsListAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список оборудования (Done)'],
+=======
+        summary = 'Список оборудования',
+        description = '<ol><li>"id" - Идентификатор оборудования</li><li>"type_name" - Наименование типа оборудования</li>\
+        <li>"vendor_name" - Наименование вендора оборудования</li><li>"brand_name" - Наименование бренда оборудования</li>\
+        <li>"model_name" - Наименование модели оборудования</li></ol>',
+        responses = {(200, 'application/json'): OpenApiResponse(response = EquipmentsListSerializer(many = True))}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def get(self, request, *args, **kwargs):
 
@@ -38,8 +56,17 @@ class EquipmentsListAPIView(APIView):
         return Response(serializer.data, status = status.HTTP_200_OK)
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список оборудования. Добавление (Done)'],
         request = EditEquipmentSerializer()
+=======
+        summary = 'Добавление оборудования',
+        description = '<ol><li>"type" - Идентификатор типа оборудования</li>\
+        <li>"vendor" - Идентификатор вендора оборудования</li><li>"brand" - Идентификатор бренда оборудования</li>\
+        <li>"model" - Идентификатор модели оборудования</li></ol>',
+        request = EditEquipmentSerializer(),
+        responses = {(201, 'application/json'): OpenApiResponse(response = EditEquipmentSerializer())}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def post(self, request, *args, **kwargs):
         serializer = EditEquipmentSerializer(data = request.data)
@@ -48,12 +75,30 @@ class EquipmentsListAPIView(APIView):
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Оборудование (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EditEquipmentAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список оборудования. Изменение (Done)'],
         request = EditEquipmentSerializer()
+=======
+        summary = 'Изменение оборудования',
+        description = '<ol><li>"type" - Идентификатор типа оборудования</li>\
+        <li>"vendor" - Идентификатор вендора оборудования</li><li>"brand" - Идентификатор бренда оборудования</li>\
+        <li>"model" - Идентификатор модели оборудования</li></ol>',
+        parameters = [
+            OpenApiParameter(name = 'equipment_id', description = 'Идентификатор оборудования', type = int, required = True, location = OpenApiParameter.PATH),
+        ],
+        request = EditEquipmentSerializer(),
+        responses = {(200, 'application/json'): OpenApiResponse(response = EditEquipmentSerializer())}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def put(self, request, equipment_id, *args, **kwargs):
         equipment = GetEquipment(equipment_id)
@@ -65,19 +110,41 @@ class EditEquipmentAPIView(APIView):
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список оборудования. Удаление (Done)'],
+=======
+        summary = 'Удаление оборудования',
+        parameters = [
+            OpenApiParameter(name = 'equipment_id', description = 'Идентификатор оборудования', type = int, required = True, location = OpenApiParameter.PATH),
+        ],
+        responses = {(200, 'application/json'): OpenApiResponse(response = {'message': 'Элемент удален'}, examples = [OpenApiExample('Пример', value = {'message': 'Элемент удален'})])}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def delete(self, request, equipment_id, *args, **kwargs):
         equipment = GetEquipment(equipment_id)
         equipment.delete()
         return Response({'message': 'Элемент удален'}, status = status.HTTP_200_OK)
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Оборудование (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EquipmentsDeleteAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список оборудования. Удаление нескольких (Done)'],
         request = EquipmentsDeleteSerializer(),
+=======
+        summary = 'Удаление списка оборудования',
+        description = 'Используется метод POST, т.к. методом DELETE невозможно отправить тело запроса\
+        <p>"id" - Список идентификаторов оборудования { "id": [1, 2, 3] }</p>',
+        request = EquipmentsDeleteSerializer(),
+        responses = {(200, 'application/json'): OpenApiResponse(response = {'message': 'Элементы удалены'}, examples = [OpenApiExample('Пример', value = {'message': 'Элементы удалены'})])}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def post(self, request, *args, **kwargs):
         serializer = EquipmentsDeleteSerializer({'id': request.data.getlist('id')})
@@ -92,23 +159,45 @@ def GetEquipment(equipment_id):
     except:
         return Response({'error': 'Объект не найден'}, status = status.HTTP_400_BAD_REQUEST)
 
+<<<<<<< HEAD
 #Типы оборудования
+=======
+@extend_schema(
+    tags = ['Типы оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EquipmentTypesListAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список типов оборудования (Done)'],
     )
     def get(self, request, *args, **kwargs):
 
         list = TypeModel.objects.all()
 
+=======
+        summary = 'Список типов оборудования',
+        description = '<ol><li>"id" - Идентификатор типа оборудования</li><li>"name" - Наименование типа оборудования</li></ol>',
+        responses = {(200, 'application/json'): OpenApiResponse(response = EquipmentTypesSerializer(many = True))}
+    )
+    def get(self, request, *args, **kwargs):
+        list = TypeModel.objects.all()
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
         serializer = EquipmentTypesSerializer(list, many = True)
         return Response(serializer.data, status = status.HTTP_200_OK)
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список типов оборудования. Добавление (Done)'],
         request = EquipmentTypesSerializer()
+=======
+        summary = 'Добавление типа оборудования',
+        description = '"name" - Наименование типа оборудования',
+        request =  EquipmentTypesSerializer(),
+        responses = {(201, 'application/json'): OpenApiResponse(response = EquipmentTypesSerializer())}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def post(self, request, *args, **kwargs):
         serializer = EquipmentTypesSerializer(data = request.data)
@@ -117,12 +206,28 @@ class EquipmentTypesListAPIView(APIView):
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Типы оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EditEquipmentTypeAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список типов оборудования. Изменение (Done)'],
         request = EquipmentTypesSerializer()
+=======
+        summary = 'Изменение типа оборудования',
+        description = '"name" - Наименование типа оборудования',
+        parameters = [
+            OpenApiParameter(name = 'type_id', description = 'Идентификатор типа оборудования', type = int, required = True, location = OpenApiParameter.PATH),
+        ],
+        request = EquipmentTypesSerializer(),
+        responses = {(200, 'application/json'): OpenApiResponse(response = EquipmentTypesSerializer())}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def put(self, request, type_id, *args, **kwargs):
         type = GetEquipmentType(type_id)
@@ -134,19 +239,41 @@ class EditEquipmentTypeAPIView(APIView):
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список типов оборудования. Удаление (Done)'],
+=======
+        summary = 'Удаление типа оборудования',
+        parameters = [
+            OpenApiParameter(name = 'type_id', description = 'Идентификатор типа оборудования', type = int, required = True, location = OpenApiParameter.PATH),
+        ],
+        responses = {(200, 'application/json'): OpenApiResponse(response = {'message': 'Элемент удален'}, examples = [OpenApiExample('Пример', value = {'message': 'Элемент удален'})])}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def delete(self, request, type_id, *args, **kwargs):
         type = GetEquipmentType(type_id)
         type.delete()
         return Response({'message': 'Элемент удален'}, status = status.HTTP_200_OK)
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Типы оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EquipmentTypesDeleteAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список типов оборудования. Удаление нескольких (Done)'],
         request = EquipmentTypesDeleteSerializer(),
+=======
+        summary = 'Удаление списка типов оборудования',
+        description = 'Используется метод POST, т.к. методом DELETE невозможно отправить тело запроса\
+        <p>"id" - Список идентификаторов оборудования { "id": [1, 2, 3] }</p>',
+        request = EquipmentTypesDeleteSerializer(),
+        responses = {(200, 'application/json'): OpenApiResponse(response = {'message': 'Элементы удалены'}, examples = [OpenApiExample('Пример', value = {'message': 'Элементы удалены'})])}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def post(self, request, *args, **kwargs):
         serializer = EquipmentTypesDeleteSerializer({'id': request.data.getlist('id')})
@@ -155,11 +282,22 @@ class EquipmentTypesDeleteAPIView(APIView):
             return Response({'message': 'Элементы удалены'}, status = status.HTTP_200_OK)
         return Response({'error': 'Некорректные данные'}, status = status.HTTP_400_BAD_REQUEST)
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Типы оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EquipmentTypesExcelAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список типов оборудования. Экспорт (Done)'],
+=======
+        summary = 'Экспорт списка типов оборудования в Excel',
+        description = 'Response - файл с данными',
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def get(self, request, *args, **kwargs):
         types = EquipmentTypesListAPIView().get(request = request).data
@@ -171,8 +309,15 @@ class EquipmentTypesExcelAPIView(APIView):
         return response
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список типов оборудования. Импорт (Done)'],
         request = EquipmentImportSerializer()
+=======
+        summary = 'Импорт списка типов оборудования из Excel',
+        description = '"excel" - xlsx-файл <b>Внимание! Тип параметра - File {"lastModified": 0, "name": "string", "size": 0, "type": "string", ...}</b>',
+        request = EquipmentImportSerializer(),
+        responses = {(200, 'application/json'): OpenApiResponse(response = EquipmentTypesSerializer(many = True))}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def post(self, request, *args, **kwargs):
         records = LoadSimpleItems(request.data.get('excel'))
@@ -187,23 +332,45 @@ def GetEquipmentType(type_id):
     except:
         return Response({'error': 'Объект не найден'}, status = status.HTTP_400_BAD_REQUEST)
 
+<<<<<<< HEAD
 #Вендоры оборудования
+=======
+@extend_schema(
+    tags = ['Вендоры оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EquipmentVendorsListAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список вендоров оборудования (Done)'],
     )
     def get(self, request, *args, **kwargs):
 
         list = VendorModel.objects.all()
 
+=======
+        summary = 'Список вендоров оборудования',
+        description = '<ol><li>"id" - Идентификатор вендора оборудования</li><li>"name" - Наименование вендора оборудования</li></ol>',
+        responses = {(200, 'application/json'): OpenApiResponse(response = EquipmentVendorsSerializer(many = True))}
+    )
+    def get(self, request, *args, **kwargs):
+        list = VendorModel.objects.all()
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
         serializer = EquipmentVendorsSerializer(list, many = True)
         return Response(serializer.data, status = status.HTTP_200_OK)
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список вендоров оборудования. Добавление (Done)'],
         request = EquipmentVendorsSerializer()
+=======
+        summary = 'Добавление вендора оборудования',
+        description = '"name" - Наименование вендора оборудования',
+        request = EquipmentVendorsSerializer(),
+        responses = {(201, 'application/json'): OpenApiResponse(response = EquipmentVendorsSerializer())}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def post(self, request, *args, **kwargs):
         serializer = EquipmentVendorsSerializer(data = request.data)
@@ -212,12 +379,28 @@ class EquipmentVendorsListAPIView(APIView):
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Вендоры оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EditEquipmentVendorAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список вендоров оборудования. Изменение (Done)'],
         request = EquipmentVendorsSerializer()
+=======
+        summary = 'Изменение вендора оборудования',
+        description = '"name" - Наименование вендора оборудования',
+        parameters = [
+            OpenApiParameter(name = 'vendor_id', description = 'Идентификатор вендора оборудования', type = int, required = True, location = OpenApiParameter.PATH),
+        ],
+        request = EquipmentVendorsSerializer(),
+        responses = {(200, 'application/json'): OpenApiResponse(response = EquipmentVendorsSerializer())}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def put(self, request, vendor_id, *args, **kwargs):
         vendor = GetEquipmentVendor(vendor_id)
@@ -229,19 +412,41 @@ class EditEquipmentVendorAPIView(APIView):
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список вендоров оборудования. Удаление (Done)'],
+=======
+        summary = 'Удаление вендора оборудования',
+        parameters = [
+            OpenApiParameter(name = 'vendor_id', description = 'Идентификатор вендора оборудования', type = int, required = True, location = OpenApiParameter.PATH),
+        ],
+        responses = {(200, 'application/json'): OpenApiResponse(response = {'message': 'Элемент удален'}, examples = [OpenApiExample('Пример', value = {'message': 'Элемент удален'})])}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def delete(self, request, vendor_id, *args, **kwargs):
         vendor = GetEquipmentVendor(vendor_id)
         vendor.delete()
         return Response({'message': 'Элемент удален'}, status = status.HTTP_200_OK)
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Вендоры оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EquipmentVendorsDeleteAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список вендоров оборудования. Удаление нескольких (Done)'],
         request = EquipmentVendorsDeleteSerializer(),
+=======
+        summary = 'Удаление списка вендоров оборудования',
+        description = 'Используется метод POST, т.к. методом DELETE невозможно отправить тело запроса\
+        <p>"id" - Список идентификаторов вендоров { "id": [1, 2, 3] }</p>',
+        request = EquipmentVendorsDeleteSerializer(),
+        responses = {(200, 'application/json'): OpenApiResponse(response = {'message': 'Элементы удалены'}, examples = [OpenApiExample('Пример', value = {'message': 'Элементы удалены'})])}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def post(self, request, *args, **kwargs):
         serializer = EquipmentVendorsDeleteSerializer({'id': request.data.getlist('id')})
@@ -250,11 +455,22 @@ class EquipmentVendorsDeleteAPIView(APIView):
             return Response({'message': 'Элементы удалены'}, status = status.HTTP_200_OK)
         return Response({'error': 'Некорректные данные'}, status = status.HTTP_400_BAD_REQUEST)
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Вендоры оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EquipmentVendorsExcelAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список вендоров оборудования. Экспорт (Done)'],
+=======
+        summary = 'Экспорт списка вендоров оборудования в Excel',
+        description = 'Response - файл с данными',
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def get(self, request, *args, **kwargs):
         vendors = EquipmentVendorsListAPIView().get(request = request).data
@@ -266,8 +482,15 @@ class EquipmentVendorsExcelAPIView(APIView):
         return response
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список вендоров оборудования. Импорт (Done)'],
         request = EquipmentImportSerializer()
+=======
+        summary = 'Импорт списка вендоров оборудования из Excel',
+        description = '"excel" - xlsx-файл <b>Внимание! Тип параметра - File {"lastModified": 0, "name": "string", "size": 0, "type": "string", ...}</b>',
+        request = EquipmentImportSerializer(),
+        responses = {(200, 'application/json'): OpenApiResponse(response = EquipmentVendorsSerializer(many = True))}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def post(self, request, *args, **kwargs):
         records = LoadSimpleItems(request.data.get('excel'))
@@ -282,12 +505,24 @@ def GetEquipmentVendor(vendor_id):
     except:
         return Response({'error': 'Объект не найден'}, status = status.HTTP_400_BAD_REQUEST)
 
+<<<<<<< HEAD
 #Бренды оборудования
+=======
+@extend_schema(
+    tags = ['Бренды оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EquipmentBrandsListAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список брендов оборудования (Done)'],
+=======
+        summary = 'Список брендов оборудования',
+        description = '<ol><li>"id" - Идентификатор бренда оборудования</li><li>"name" - Наименование бренда оборудования</li></ol>',
+        responses = {(200, 'application/json'): OpenApiResponse(response = EquipmentBrandsSerializer(many = True))}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def get(self, request, *args, **kwargs):
 
@@ -297,8 +532,15 @@ class EquipmentBrandsListAPIView(APIView):
         return Response(serializer.data, status = status.HTTP_200_OK)
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список брендов оборудования. Добавление (Done)'],
         request = EquipmentBrandsSerializer()
+=======
+        summary = 'Добавление бренда оборудования',
+        description = '"name" - Наименование бренда оборудования',
+        request = EquipmentBrandsSerializer(),
+        responses = {(201, 'application/json'): OpenApiResponse(response = EquipmentBrandsSerializer())}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def post(self, request, *args, **kwargs):
         serializer = EquipmentBrandsSerializer(data = request.data)
@@ -307,12 +549,28 @@ class EquipmentBrandsListAPIView(APIView):
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Бренды оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EditEquipmentBrandAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список брендов оборудования. Изменение (Done)'],
         request = EquipmentBrandsSerializer()
+=======
+        summary = 'Изменение бренда оборудования',
+        description = '"name" - Наименование бренда оборудования',
+        parameters = [
+            OpenApiParameter(name = 'brand_id', description = 'Идентификатор бренда оборудования', type = int, required = True, location = OpenApiParameter.PATH),
+        ],
+        request = EquipmentBrandsSerializer(),
+        responses = {(200, 'application/json'): OpenApiResponse(response = EquipmentBrandsSerializer())}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def put(self, request, brand_id, *args, **kwargs):
         brand = GetEquipmentBrand(brand_id)
@@ -324,19 +582,41 @@ class EditEquipmentBrandAPIView(APIView):
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список брендов оборудования. Удаление (Done)'],
+=======
+        summary = 'Удаление бренда оборудования',
+        parameters = [
+            OpenApiParameter(name = 'brand_id', description = 'Идентификатор бренда оборудования', type = int, required = True, location = OpenApiParameter.PATH),
+        ],
+        responses = {(200, 'application/json'): OpenApiResponse(response = {'message': 'Элемент удален'}, examples = [OpenApiExample('Пример', value = {'message': 'Элемент удален'})])}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def delete(self, request, brand_id, *args, **kwargs):
         brand = GetEquipmentBrand(brand_id)
         brand.delete()
         return Response({'message': 'Элемент удален'}, status = status.HTTP_200_OK)
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Бренды оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EquipmentBrandsDeleteAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список брендов оборудования. Удаление нескольких (Done)'],
         request = EquipmentBrandsDeleteSerializer(),
+=======
+        summary = 'Удаление списка брендов оборудования',
+        description = 'Используется метод POST, т.к. методом DELETE невозможно отправить тело запроса\
+        <p>"id" - Список идентификаторов брендов { "id": [1, 2, 3] }</p>',
+        request = EquipmentBrandsDeleteSerializer(),
+        responses = {(200, 'application/json'): OpenApiResponse(response = {'message': 'Элементы удалены'}, examples = [OpenApiExample('Пример', value = {'message': 'Элементы удалены'})])}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def post(self, request, *args, **kwargs):
         serializer = EquipmentBrandsDeleteSerializer({'id': request.data.getlist('id')})
@@ -345,11 +625,22 @@ class EquipmentBrandsDeleteAPIView(APIView):
             return Response({'message': 'Элементы удалены'}, status = status.HTTP_200_OK)
         return Response({'error': 'Некорректные данные'}, status = status.HTTP_400_BAD_REQUEST)
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Бренды оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EquipmentBrandsExcelAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список брендов оборудования. Экспорт (Done)'],
+=======
+        summary = 'Экспорт списка вендоров оборудования в Excel',
+        description = 'Response - файл с данными',
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def get(self, request, *args, **kwargs):
         brands = EquipmentBrandsListAPIView().get(request = request).data
@@ -361,8 +652,15 @@ class EquipmentBrandsExcelAPIView(APIView):
         return response
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список брендов оборудования. Импорт (Done)'],
         request = EquipmentImportSerializer()
+=======
+        summary = 'Импорт списка брендов оборудования из Excel',
+        description = '"excel" - xlsx-файл <b>Внимание! Тип параметра - File {"lastModified": 0, "name": "string", "size": 0, "type": "string", ...}</b>',
+        request = EquipmentImportSerializer(),
+        responses = {(200, 'application/json'): OpenApiResponse(response = EquipmentBrandsSerializer(many = True))}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def post(self, request, *args, **kwargs):
         records = LoadSimpleItems(request.data.get('excel'))
@@ -371,29 +669,55 @@ class EquipmentBrandsExcelAPIView(APIView):
         BrandModel.objects.bulk_create(list, ignore_conflicts = True)
         return Response(records, status = status.HTTP_200_OK)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 def GetEquipmentBrand(brand_id):
     try:
         return BrandModel.objects.get(id = brand_id)
     except:
         return Response({'error': 'Объект не найден'}, status = status.HTTP_400_BAD_REQUEST)
 
+<<<<<<< HEAD
 #Модели оборудования
+=======
+@extend_schema(
+    tags = ['Модели оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EquipmentModelsListAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список моделей оборудования (Done)'],
     )
     def get(self, request, *args, **kwargs):
 
+=======
+        summary = 'Список моделей оборудования',
+        description = '<ol><li>"id" - Идентификатор модели оборудования</li><li>"name" - Наименование модели оборудования</li>\
+        <li>"brand_name" - Наименование бренда</li><li>"vendor_name" - Наименование вендора</li></ol>',
+        responses = {(200, 'application/json'): OpenApiResponse(response = EquipmentModelsSerializer(many = True))}
+    )
+    def get(self, request, *args, **kwargs):
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
         list = ModelModel.objects.all().annotate(vendor_name = F('vendor__name'), brand_name = F('brand__name'))
         serializer = EquipmentModelsSerializer(list, many = True)
         return Response(serializer.data, status = status.HTTP_200_OK)
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список моделей оборудования. Добавление (Done)'],
         request = EditEquipmentModelSerializer()
+=======
+        summary = 'Добавление модели оборудования',
+        description = '<ol><li>"name" - Наименование модели оборудования</li>\
+        <li>"brand" - Идентификатор бренда</li><li>"vendor" - Идентификатор вендора</li></ol>',
+        request = EditEquipmentModelSerializer(),
+        responses = {(201, 'application/json'): OpenApiResponse(response = EditEquipmentModelSerializer())}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def post(self, request, *args, **kwargs):
         serializer = EditEquipmentModelSerializer(data = request.data)
@@ -402,12 +726,29 @@ class EquipmentModelsListAPIView(APIView):
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Модели оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EditEquipmentModelAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список моделей оборудования. Изменение (Done)'],
         request = EditEquipmentModelSerializer()
+=======
+        summary = 'Изменение модели оборудования',
+        description = '<ol><li>"name" - Наименование модели оборудования</li>\
+        <li>"brand" - Идентификатор бренда</li><li>"vendor" - Идентификатор вендора</li></ol>',
+        parameters = [
+            OpenApiParameter(name = 'model_id', description = 'Идентификатор модели оборудования', type = int, required = True, location = OpenApiParameter.PATH),
+        ],
+        request = EditEquipmentModelSerializer(),
+        responses = {(200, 'application/json'): OpenApiResponse(response = EditEquipmentModelSerializer())}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def put(self, request, model_id, *args, **kwargs):
         model = GetEquipmentModel(model_id)
@@ -419,19 +760,41 @@ class EditEquipmentModelAPIView(APIView):
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список моделей оборудования. Удаление (Done)'],
+=======
+        summary = 'Удаление модели оборудования',
+        parameters = [
+            OpenApiParameter(name = 'model_id', description = 'Идентификатор модели оборудования', type = int, required = True, location = OpenApiParameter.PATH),
+        ],
+        responses = {(200, 'application/json'): OpenApiResponse(response = {'message': 'Элемент удален'}, examples = [OpenApiExample('Пример', value = {'message': 'Элемент удален'})])}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def delete(self, request, model_id, *args, **kwargs):
         model = GetEquipmentModel(model_id)
         model.delete()
         return Response({'message': 'Элемент удален'}, status = status.HTTP_200_OK)
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Модели оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EquipmentModelsDeleteAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список моделей оборудования. Удаление нескольких (Done)'],
         request = EquipmentModelsDeleteSerializer(),
+=======
+        summary = 'Удаление списка моделей оборудования',
+        description = 'Используется метод POST, т.к. методом DELETE невозможно отправить тело запроса\
+        <p>"id" - Список идентификаторов моделей { "id": [1, 2, 3] }</p>',
+        request = EquipmentModelsDeleteSerializer(),
+        responses = {(200, 'application/json'): OpenApiResponse(response = {'message': 'Элементы удалены'}, examples = [OpenApiExample('Пример', value = {'message': 'Элементы удалены'})])}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def post(self, request, *args, **kwargs):
         serializer = EquipmentModelsDeleteSerializer({'id': request.data.getlist('id')})
@@ -440,11 +803,22 @@ class EquipmentModelsDeleteAPIView(APIView):
             return Response({'message': 'Элементы удалены'}, status = status.HTTP_200_OK)
         return Response({'error': 'Некорректные данные'}, status = status.HTTP_400_BAD_REQUEST)
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Модели оборудования (Done)'],
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class EquipmentModelsExcelAPIView(APIView):
     permission_classes = [IsAdminUser,]
 
     @extend_schema(
+<<<<<<< HEAD
         tags = ['Список моделей оборудования. Экспорт (Done)'],
+=======
+        summary = 'Экспорт списка моделей оборудования в Excel',
+        description = 'Response - файл с данными',
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def get(self, request, *args, **kwargs):
         models = EquipmentModelsListAPIView().get(request = request).data

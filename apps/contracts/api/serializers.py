@@ -15,9 +15,16 @@ class EquipmentSerializer(serializers.ModelSerializer):
         model = ContractEquipmentModel
         fields = ['id', 'sn', 'equipment', 'support', 'DELETE']
 
+<<<<<<< HEAD
 class ContractSerializer(serializers.ModelSerializer):
     eqcontracts = EquipmentSerializer(many = True, required = False)
     signed = serializers.DateField(label = 'Начало договора', format = '%d.%m.%Y')
+=======
+class ContractDetailsSerializer(serializers.ModelSerializer):
+    eqcontracts = EquipmentSerializer(many = True, required = False)
+    signed = serializers.DateField(label = 'Начало договора', format = '%d.%m.%Y')
+    enddate = serializers.DateField(label = 'Окончание договора', format = '%d.%m.%Y')
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 
     class Meta:
         model = ContractModel

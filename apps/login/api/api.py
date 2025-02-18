@@ -17,7 +17,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import APIException
 
+<<<<<<< HEAD
 from drf_spectacular.utils import extend_schema
+=======
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, OpenApiResponse
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 
 from login.api.serializers import *
 
@@ -32,8 +36,15 @@ class LoginAPIView(APIView):
     permission_classes = [AllowAny,]
 
     @extend_schema(
+<<<<<<< HEAD
         request = LoginSerializer(),
         summary = 'Вход в учетную запись'
+=======
+        summary = 'Вход в учетную запись',
+        description = '<ol><li>"email" - Адрес электронной почты пользователя</li><li>"password" - Пароль пользователя</li></ol>',
+        request = LoginSerializer(),
+        responses = {(202, 'application/json'): None}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def post(self, request, format = None):
         serializer = LoginSerializer(data = request.data)
@@ -46,18 +57,37 @@ class LoginAPIView(APIView):
         return Response("Ошибка авторизации: указан неверный логин или пароль", status = status.HTTP_401_UNAUTHORIZED)
 
     @extend_schema(
+<<<<<<< HEAD
           summary = 'Выход из учетной записи'
+=======
+          summary = 'Выход из учетной записи',
+          description = 'Response - переадресация на домашную страницу приложения'
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def get(self, request, *args, **kwargs):
         logout(request)
         return redirect('home')
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Аутентификация пользователя (Done)', ]
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class PasswordChangeAPIView(APIView):
     permission_classes = [IsAuthenticated,]
 
     @extend_schema(
+<<<<<<< HEAD
         request = PasswordChangeSerializer(),
         tags = ['Изменение пароля пользователя (Done)', ]
+=======
+        summary = 'Изменение пароля пользователя (Функционал доступен только клиентам)',
+        description = '<ol><li>"old_password" - Старый пароль</li><li>"new_password1" - Новый пароль</li>\
+        <li>"new_password2" - Новый пароль (подтверждение)</li></ol>',
+        request = PasswordChangeSerializer(),
+        responses = {(200, 'application/json'): None}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def put(self, request, *args, **kwargs):
         user = request.user
@@ -68,12 +98,28 @@ class PasswordChangeAPIView(APIView):
         else:
             return Response(form.errors.as_data(), status = status.HTTP_406_NOT_ACCEPTABLE)
 
+<<<<<<< HEAD
+=======
+@extend_schema(
+    tags = ['Аутентификация пользователя (Done)', ]
+)
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 class AdminPasswordChangeAPIView(APIView):
     permission_classes = [IsAuthenticated,]
 
     @extend_schema(
+<<<<<<< HEAD
         request = AdminPasswordChangeSerializer(),
         tags = ['Изменение пароля пользователя администратором (Done)', ]
+=======
+        summary = 'Изменение пароля пользователя администратором (Функционал доступен только администраторам)',
+        description = '<ol><li>"password1" - Новый пароль</li><li>"password2" - Новый пароль (подтверждение)</li></ol>',
+        parameters = [
+            OpenApiParameter(name = 'user_id', description = 'Идентификатор пользователя', type = int, required = True, location = OpenApiParameter.PATH),
+        ],
+        request = AdminPasswordChangeSerializer(),
+        responses = {(200, 'application/json'): None}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def put(self, request, user_id, *args, **kwargs):
         if not request.user.groups.filter(name = 'Администратор').exists():
@@ -101,7 +147,14 @@ class PasswordResetView(APIView):
     permission_classes = [AllowAny,]
 
     @extend_schema(
+<<<<<<< HEAD
         summary = 'Восстановление пароля'
+=======
+        summary = 'Запрос на восстановление пароля - отправка сообщения, содержащего ссылку на форму смены пароля, на электронный адрес пользователя',
+        description = '"email" - Адрес электронной почты пользователя',
+        request = PasswordResetSerializer(),
+        responses = {(200, 'application/json'): None}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def post(self, request, *args, **kwargs):
         serializer = PasswordResetSerializer(data = request.data)
@@ -138,7 +191,18 @@ class PasswordResetConfirmView(APIView):
     permission_classes = [AllowAny,]
 
     @extend_schema(
+<<<<<<< HEAD
         summary = 'Восстановление пароля'
+=======
+        summary = 'Восстановление пароля',
+        description = '<ol><li>"password1" - Новый пароль</li><li>"password2" - Новый пароль (подтверждение)</li></ol>',
+        parameters = [
+            OpenApiParameter(name = 'uid', description = 'Идентификатор пользователя (закодированный в base 64), указанный в ссылке, пришедшей в сообщении о восстановлении пароля', type = str, required = True, location = OpenApiParameter.PATH),
+            OpenApiParameter(name = 'token', description = 'Токен, указанный в ссылке, пришедшей в сообщении о восстановлении пароля', type = str, required = True, location = OpenApiParameter.PATH),
+        ],
+        request = PasswordResetConfirmSerializer(),
+        responses = {(200, 'application/json'): None}
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
     )
     def put(self, request, uid, token, *args, **kwargs):
         serializer = PasswordResetConfirmSerializer(data = request.data)

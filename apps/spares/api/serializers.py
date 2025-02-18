@@ -88,6 +88,12 @@ class SparesDeleteSerializer(serializers.ModelSerializer):
 class SparesImportSerializer(serializers.Serializer):
     excel = serializers.FileField(label = 'Файл для загрузки', required = True)
 
+<<<<<<< HEAD
+=======
+class LoadedSparesLoadedSerializer(serializers.Serializer):#Для документации
+    spare = serializers.IntegerField(label = 'Идентификатор запчасти')
+    number = serializers.IntegerField(label = 'Идентификатор партномера')
+>>>>>>> 0b86e9e586987b8a392d3f43c66c2fbb91b80e10
 
 class PartNumberSerializer(serializers.ModelSerializer):
     class Meta:
