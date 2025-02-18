@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Удаление элемента{% endblock title %}
+
+{% block page-title %}Удаление элемента{% endblock page-title %}
+{% block content %}
+<section>
+  <div class="container">
+    <div class="justify-center">
+      <div class="form">
+        <form method="DELETE" action="{{ action }}">
+          <h2 class="text-center">Удалить информацию "{{ form.instance|striptags }}"</h2>
+          <div class="justify-center">
+            <button type="submit" class="btn dark-btn">Отправить</button>
+            <a href="{{ link }}" class="btn light-btn">Отмена</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
+{% block pagescripts %}
+  <script type="module" src="{% static 'js/forms/edit.js' %}"></script>
+{% endblock pagescripts %}

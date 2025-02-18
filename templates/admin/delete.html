@@ -1,0 +1,23 @@
+{% extends 'admin/menu.html' %}
+{% load static %}
+{% block title %}Администрирование{% endblock title %}
+{% block page-title %}Удаление{% endblock page-title %}
+{% block admin-content %}
+  <div class="justify-center">
+    <div class="form">
+      <form method="{% if action %}DELETE{% else %}POST{% endif %}" {% if action %}action="{{ action }}"{% endif %}>
+        {% csrf_token %}
+        <h2 class="align-center">Удалить информацию о "{{ form.instance }}"?</h2>
+        <div class="justify-center">
+          <button type="submit" class="btn dark-btn">Удалить</button>
+          <a href="{% url link %}" class="btn light-btn">Отмена</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock admin-content %}
+{% block pagescripts %}
+{% if action %}
+  <script type="module" src="{% static 'js/forms/edit.js' %}"></script>
+{% endif %}
+{% endblock pagescripts %}

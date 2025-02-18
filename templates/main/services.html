@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Услуги{% endblock title %}
+{% block description %}У нас уже есть множество решений под ваши задачи и мы готовы ими поделиться{% endblock description %}
+
+{% block content %}
+<section>
+  <div class="banner">
+    <div class="parallax parallax-services"></div>
+    <div class="banner-caption">
+      <h1>ЦЕНОВАЯ ПОЛИТИКА</h1>
+      <p>Мы выполним работы на 30%-50% дешевле глобальных вендоров. При этом работы будут выполнены лучшими специалистами, имеющими опыт в соответствующих компаниях-производителях</p>
+    </div>
+  </div>
+</section>
+<section>
+  <div>
+      <div class="container">
+        <div class="block">
+          <div class="block-title">
+            <h2>Наши услуги</h2>
+            <p>У нас уже есть множество решений под ваши задачи и мы готовы ими поделиться.</p>
+            <p>Доверьте оборудование профессионалам своего дела.</p>
+          </div>
+          <div class="block-content justify-center">
+            {% for service in services %}
+              <div class="col-3">
+                <div class="img-wrapper">
+                  <div class="img-gradient"><img src="{{ service.img.url }}"></div>
+                  <h3 class="img-title">{{ service.name }}</h3>
+                </div>
+                <div class="img-desc">{{ service.description }}</div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+  </div>
+</section>
+  <section>
+    <div class="banner">
+      <div class="parallax parallax-audit"></div>
+      <div class="banner-caption">
+        <h1>АУДИТ</h1>
+        <p>Сервис по аудиту позволяет создать отчёт о текущем состоянии ИТ-инфраструктуры и уязвимых местах, который будет включать заключение с рекомендациями по оптимизации ИТ-систем</p>
+      </div>
+    </div>
+  </section>
+{% endblock content %}

@@ -1,0 +1,50 @@
+{% extends 'admin/menu.html' %}
+{% load static %}
+{% block title %}Администрирование{% endblock title %}
+{% block pagecss %}
+  {% if search %}
+    <link rel="stylesheet" type="text/css" href="{% static 'django_select2/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'django_select2/django_select2.css' %}">
+  {% endif %}
+{% endblock %}
+{% block page-title %}Редактирование{% endblock page-title %}
+{% block admin-content %}
+  <div class="justify-center">
+    <div class="form">
+      {% if delete_link %}
+        <div class="justify-right">
+          <a class="btn red-btn" href="{% url delete_link form.instance.pk %}">Удалить</a>
+        </div>
+      {% endif %}
+      <form method="{% if method %}{{ method }}{% else %}POST{% endif %}" {% if files %}enctype="multipart/form-data"{% endif %} {% if action %}action="{{ action }}"{% endif %}>
+        {% csrf_token %}
+        {% for field in form %}
+          <div>
+            {{ field.label_tag }}
+            {{ field.errors }}
+            {{ field }}
+            <p class="help-text">{{ field.help_text|safe }}</p>
+          </div>
+        {% endfor %}
+        <div class="justify-center">
+          <button type="submit" class="btn dark-btn">Отправить</button>
+          <a href="{% url link %}" class="btn light-btn">Отмена</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock admin-content %}
+{% block pagescripts %}
+{% if search %}
+  <script src="{% static 'django_select2/jquery.min.js' %}"></script>
+  <script src="{% static 'django_select2/select2.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'django_select2/django_select2.js' %}"></script>
+  {% comment %}<script type="text/javascript" src="{% static 'js/forms/search.js' %}"></script>{% endcomment %}
+{% endif %}
+{% if dates %}
+  <script type="text/javascript" src="{% static 'js/datepicker.js' %}"></script>
+{% endif %}
+{% if action %}
+  <script type="module" src="{% static 'js/forms/edit.js' %}"></script>
+{% endif %}
+{% endblock pagescripts %}

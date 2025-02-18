@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Список статей{% endblock title %}
+{% block page-title %}Список статей{% endblock page-title %}
+{% block content %}
+<section>
+  <div class="container">
+    {% if list %}
+      <div class="filters">Поиск: <input type="text" id="search" class="w-80" autocomplete="off"> <a id="search-btn" class="btn small-light-btn">Найти</a></div>
+      <ul class="list-items">
+        {% for elm in list %}
+          <li><a target="_blank" href="{% url 'article-detail' elm.id %}">{{ forloop.counter|add:pagination.number }}. {{ elm.title }}</a></li>
+        {% endfor %}
+
+      </ul>
+
+      <input type="hidden" name="page" id="id_page" value="{{ pagination.page }}">
+      <ul class="pagination {% if pagination.num_pages <= 1 %}hidden{% endif %}" num_pages="{{ pagination.num_pages }}">
+        <li class="angle-double-left {% if pagination.page|add:-2 <= 1  %}hidden{% endif %}"></li>
+        <li class="angle-left prev {% if pagination.page <= 1 %}hidden{% endif %}"></li>
+        {% for page in pagination.range %}
+          {% if page <= pagination.page|add:2 and page >= pagination.page|add:-2 %}
+            <li class="page {% if forloop.counter == pagination.page %}current-page{% endif %}">{{ forloop.counter }}</li>
+          {% endif %}
+        {% endfor %}
+        <li class="angle-right next {% if pagination.num_pages == pagination.page %}hidden{% endif %}"></li>
+        <li class="angle-double-right {% if pagination.page|add:2 >= pagination.num_pages %}hidden{% endif %}"></li>
+      </ul>
+    {% endif %}
+  </div>
+</section>
+{% endblock content %}
+{% block pagescripts %}
+<script type="text/javascript" src="{% static 'js/articles.js' %}"></script>
+{% endblock %}

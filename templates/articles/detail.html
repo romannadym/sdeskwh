@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ article.title }}{% endblock title %}
+{% block pagecss %}<link rel="stylesheet" type="text/css" href="{% static 'css/articles.css' %}">{% endblock %}
+{% block content %}
+<section>
+  <div class="container">
+    <p class="article-number">Article Number: {{ article.number }}</p>
+    <hr class="mt-1 mb-6">
+    <h1>{{ article.header }}</h1>
+    {% if article.summary %}<h4>Summary: {{ article.summary }}</h4>{% endif %}
+    {{ article.text|safe }}
+    {% if article.attachments %}
+      <h4 id="attachments" class="mb-0">Attachments</h4>
+      <hr class="mb-8">
+      {{ article.attachments|safe }}
+    {% endif %}
+    <h4 id="article-properties" class="mb-0">Article Properties</h4>
+    <hr class="mb-8">
+    {% if article.products %}
+      <h6 class="mb-2">Affected Product</h6>
+      <p class="mb-10">{{ article.products }}</p>
+    {% endif %}
+    {% if article.pubdate %}
+      <h6 class="mb-2">Last Published Date</h6>
+      <p class="mb-10">{{ article.pubdate }}</p>
+    {% endif %}
+    {% if article.status %}
+      <h6 class="mb-2">Publish Status</h6>
+      <p class="mb-10">{{ article.status }}</p>
+    {% endif %}
+    {% if article.version %}
+      <h6 class="mb-2">Version</h6>
+      <p class="mb-10">{{ article.version }}</p>
+    {% endif %}
+    {% if article.type %}
+      <h6 class="mb-2">Article Type</h6>
+      <p class="mb-10">{{ article.type }}</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock content %}

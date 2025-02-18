@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Оформление заявки{% endblock title %}
+
+{% block page-title %}Оформление заявки{% endblock page-title %}
+{% block content %}
+<section>
+  <div class="container">
+    <div class="justify-center">
+        <input type="hidden" id="back" value="{% url 'app-list' %}">
+      <div class="form">
+        <form method="POST" enctype="multipart/form-data" id="app-form">
+          {% csrf_token %}
+          <div {% if not show %}class="hidden"{% endif %}>
+            {{ form.client.errors }}
+            {{ form.client.label_tag }}
+            <select name="client" id="id_client">
+              {% for val, text in form.fields.client.choices %}
+                <option value="{{ val }}" {% if val == request.user.id %}selected{% endif %}>{{ text }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            {{ form.priority.errors }}
+            {{ form.priority.label_tag }}
+            {{ form.priority }}
+          </div>
+          <div>
+            <label for="id_equipment">Оборудование:</label>
+            <input type="text" id="id_equipment" name="equipment" list="equipments" placeholder="Введите серийный номер оборудования" autocomplete="off">
+            <datalist id="equipments">
+            </datalist>
+          </div>
+          {% if show %}
+          <div id="confs">
+            <label>Файлы конфигурации:</label>
+
+          </div>
+          {% endif %}
+          <div>
+            {{ form.problem.errors }}
+            {{ form.problem.label_tag }}
+            {{ form.problem }}
+          </div>
+          <div>
+            {{ form.contact.errors }}
+            {{ form.contact.label_tag }}
+            {{ form.contact }}
+          </div>
+          <div class="form-grey-line">Файлы</div>
+          {{ doc_formset.management_form }}
+          <p class="pl-30">
+            {{ doc_formset.0.id }}
+            {{ doc_formset.0.document.errors }}
+            {{ doc_formset.0.document }}
+             <a class="delete-item"></a>
+            <input type="checkbox" name="{{ doc_formset.0.prefix }}-DELETE" id="id_{{ doc_formset.0.prefix }}-DELETE" class="hidden">
+          </p>
+          <div><a id="add-doc" class="add-item"> Добавить файл</a></div>
+          <div class="justify-center">
+            <button type="submit" class="btn dark-btn">Отправить</button>
+            <a href="{% url 'app-list' %}" class="btn light-btn">Отмена</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="empty-doc hidden">
+        <p class="pl-30">
+          {{ doc_formset.empty_form.id }}
+          {{ doc_formset.empty_form.document.errors }}
+          {{ doc_formset.empty_form.document }}
+           <a class="delete-item"></a>
+          <input type="checkbox" name="{{ doc_formset.empty_form.prefix }}-DELETE" id="id_{{ doc_formset.empty_form.prefix }}-DELETE" class="hidden">
+        </p>
+    </div>
+  </div>
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-text"></div>
+      <a class="btn light-btn" id="modal-close">ОК</a>
+    </div>
+  </div>
+</section>
+{% endblock content %}
+{% block pagescripts %}
+<script type="module" src="{% static 'js/apps_add.js' %}"></script>
+{% endblock %}

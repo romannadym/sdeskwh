@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Логи заявки{% endblock title %}
+
+{% block page-title %}Логи заявки{% endblock page-title %}
+{% block content %}
+<section>
+  <div class="container">
+    <a class="back-link" href="{% url 'edit-application' application_id %}">Назад</a>
+    <div class="form">
+        <ul class="timeline">
+          {% for record in history %}
+            <li>
+              <div>
+                <div class="timeline-label">
+                  <p class="timeline-date">{{ record.formatted_date }}</p>
+                    {% if record.record_type == 'comment' %}
+                      <div class="menu-edit">
+                        <ul>
+                          <li>
+                            <a class="edit-link" href="{% url 'edit-comment' record.id 1 %}"></a>
+                          </li>
+                          <li>
+                            <a class="delete-item" href="{% url 'delete-comment' record.id 1 %}"></a>
+                          </li>
+                        </ul>
+                      </div>
+                    {% endif %}
+                  </div>
+                <p>{{ record.text|safe }}</p>
+                <p class="timeline-user">Пользователь: {{ record.author_name }}</p>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+    </div>
+  </div>
+</section>
+{% endblock content %}

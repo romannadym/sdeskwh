@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Редактирование заявки{% endblock title %}
+
+{% block page-title %}Заявка № {{ data.application.id }}{% endblock page-title %}
+{% block content %}
+<section>
+  <div class="container">
+    <a class="back-link" href="{% url 'app-list' %}">Назад</a>
+    <div class="justify-between pb-40">
+      <div class="block-content w-50">
+        <form method="POST" enctype="multipart/form-data" class="edit-app">
+          {% csrf_token %}
+        <p><b>Дата создания:</b> {{ data.application.formatted_date }}</p>
+        {% if data.application.status_id != 4 %}
+          <input type="hidden" name="appstatuses-TOTAL_FORMS" value="1" id="id_appstatuses-TOTAL_FORMS">
+          <input type="hidden" name="appstatuses-INITIAL_FORMS" value="1" id="id_appstatuses-INITIAL_FORMS">
+          <input type="hidden" name="appstatuses-MIN_NUM_FORMS" value="0" id="id_appstatuses-MIN_NUM_FORMS">
+          <input type="hidden" name="appstatuses-MAX_NUM_FORMS" value="1" id="id_appstatuses-MAX_NUM_FORMS">
+          {{ formset.forms.0.id }}
+          <p class="flex">
+            <label for="id_appstatuses-0-status"><b>Статус заявки:</b> {% if data.application.status_id == 6 or data.application.status_id == 1 %}{{ data.application.status_name }}{% endif %}</label>
+            {{ formset.forms.0.status.errors }}
+            {{ formset.forms.0.status }}
+          </p>
+          <p class="flex">
+            <label for="id_priority"><b>Приоритет заявки:</b></label>
+            {{ form.priority.errors }}
+            {{ form.priority }}
+          </p>
+          <p class="flex">
+            <label for="id_engineer"><b>Назначенный инженер:</b></label>
+            {{ form.engineer.errors }}
+            {{ form.engineer }}
+          </p>
+        {% endif %}
+        {% if not admin and form.engineer.value != request.user.id or data.application.status_id == 4 %}
+          <p><b>Статус заявки:</b> {{ data.application.status_name }}</p>
+          <p><b>Приоритет заявки:</b> {{ data.application.priority_name }}</p>
+          <p><b>Назначенный инженер:</b> {{ data.application.engineer_name }}</p>
+        {% endif %}
+        <p><b>Контактные данные по заявке:</b> {% if data.application.contact_id %}{{ data.application.contact_name }} <a href="mailto:{{ data.application.contact_email }}">{{ data.application.contact_email }}</a> {{ data.application.contact_phone|default_if_none:'' }}{% endif %}</p>
+        <p><b>Уровень поддержки:</b> {{ data.application.support_level }}</p>
+        <p><b>Вендор:</b> {{ data.application.vendor_name }}</p>
+        <p><b>Оборудование:</b>
+          {% if data.application.status_id != 4 %}
+            <input type="text" id="id_equipment" name="equipment" list="equipments" placeholder="Введите серийный номер оборудования" autocomplete="off" value="{{ data.application.equipment_name }}" {% if data.application.changed %}readonly="readonly"{% endif %}>
+            {% if not data.application.changed %}
+              <datalist id="equipments">
+              </datalist>
+            {% endif %}
+          {% else %}
+            {{ data.application.equipment_name }}
+          {% endif %}
+        </p>
+        <p><b>Файлы конфигурации:</b></p>
+        <div id="confs">
+        {% for doc in confs %}
+          <p class="pl-30"><a target="_blank" href="{% get_media_prefix %}{{ doc.document }}">{{ doc.filename }}</a></p>
+        {% endfor %}
+        </div>
+        <p><b>Описание проблемы:</b> {{ data.application.problem }}</p>
+        <p><b>Прикрепленные файлы:</b></p>
+        {{ document.management_form }}
+        {% for doc in document %}
+          {% if doc.document.value %}
+          {{ doc.id }}
+          <p class="pl-30">
+            <a target="_blank" href="{% get_media_prefix %}{{ doc.document.value }}">{{ doc.name.value }}</a>
+            {{ doc.name.as_hidden }}
+          {% if data.application.status_id != 4 %}
+            <a class="delete-item"></a>
+            <input type="checkbox" name="{{ doc.prefix }}-DELETE" id="id_{{ doc.prefix }}-DELETE" class="hidden">
+          {% endif %}
+          </p>
+          {% endif %}
+        {% endfor %}
+        {% if data.application.status_id != 4 %}
+        <div><a id="add-doc" class="add-item"> Добавить файл <span class="red-text">(Возможна загрузка только текстовых форматов, архивов, изображений. Размер файла не должен превышать 50 Мб)</span></a></div>
+        <div>
+          <button type="submit" class="btn dark-btn">Сохранить</button>
+          {% if admin %}<a class="btn red-btn" id="delete-app" app_pk="{{ data.application.id }}">Удалить заявку</a>{% endif %}
+        </div>
+        {% elif admin %}
+          <div><a class="btn red-btn" id="return-app" app_pk="{{ data.application.id }}">Вернуть в работу</a></div>
+        {% endif %}
+      </form>
+    </div>
+    {% if form.engineer.value == request.user.id or admin %}
+    <div class="w-40 relative">
+      {% if data.application.status_id != 4 %}
+        <div class="form mb-40">
+        <span class="form-label">Запчасти</span>
+        <form method="POST">
+          {% csrf_token %}
+          {{ spares.management_form }}
+          <div class="justify-between">
+            <input type="text" id="id_spares" list="spares" placeholder="ЗИП" autocomplete="off"> <a id="add-spare" class="add-item"></a>
+            <datalist id="spares">
+            </datalist>
+          </div>
+          {% for spare in spares %}
+            {{ spare.id }}
+              <p class="pl-30 exists" spare="{{ spare.instance.spare_id }}">
+              {{ spare.instance.spare }} (S/n: {{ spare.instance.spare.sn }})
+              {{ spare.spare.as_hidden }}
+              <a class="delete-item"></a>
+              <input type="checkbox" name="{{ spare.prefix }}-DELETE" id="id_{{ spare.prefix }}-DELETE" class="hidden">
+              </p>
+          {% endfor %}
+          <div class="justify-center">
+            <button type="submit" class="btn dark-btn">Сохранить</button>
+          </div>
+        </form>
+      </div>
+      {% endif %}
+      <div class="bottom right-from-center"><a class="btn light-btn" href="{% url 'app-history' data.application.id 1 %}">Лог кейса</a></div>
+    </div>
+    {% endif %}
+  </div>
+    {% if data.application.status_id != 4 %}
+    <div class="justify-between pb-40">
+      <div class="form w-50">
+        <form method="POST" id="comment-form" action="{% url 'add-app-comm-api' data.application.id %}">
+          {% csrf_token %}
+          <div>
+            {{ comment.text.errors }}
+            {{ comment.text.label_tag }}
+            {{ comment.text }}
+          </div>
+          <div>
+          {{ comment.hide.label_tag }}
+          {{ comment.hide }}
+          </div>
+          <div class="justify-center">
+            <button type="submit" class="btn dark-btn">Отправить</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="form w-40">
+        <p class="timeline-title"><a href="{% url 'app-history' data.application.id 0 %}">Действия</a></p>
+        <div class="scroll-x">
+        <ul class="timeline">
+          {% for record in data.history %}
+            <li>
+              <p><span class="timeline-date">{{ record.formatted_date }}</span> <span class="timeline-user">Пользователь: {{ record.author_name }}</span></p>
+              {% if record.record_type == 'comment' and record.hide %}
+                <p class="blue-text">Комментарий скрыт от пользователей</p>
+              {% endif %}
+              <p>{{ record.text|safe }}</p>
+            </li>
+          {% endfor %}
+        </ul>
+        </div>
+        </div>
+    </div>
+    {% endif %}
+  </div>
+  {% if admin %}
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-text">Вся информация, связанная с заявкой № {{ data.application.id }}, будет удалена. Удалить заявку?</div>
+      <div class="modal-buttons"><a class="btn light-btn" id="modal-delete" action="{% url 'edit-application-api' data.application.id %}">Удалить</a><a class="btn light-btn" id="modal-cancel">Отмена</a></div>
+    </div>
+  </div>
+
+  <div id="return-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-text">Вернуть заявку № {{ data.application.id }} в работу?</div>
+      <div class="modal-buttons"><a class="btn light-btn" id="modal-return" action="{% url 'edit-done-application-api' data.application.id 6 %}">Вернуть</a><a class="btn light-btn">Отмена</a></div>
+    </div>
+  </div>
+  {% endif %}
+  <div class="empty-doc hidden">
+      <p class="pl-30">
+        {{ document.empty_form.id }}
+        {{ document.empty_form.name.as_hidden }}
+        {{ document.empty_form.document.errors }}
+        {{ document.empty_form.document }}
+        <a class="delete-item"></a>
+        <input type="checkbox" name="{{ document.empty_form.prefix }}-DELETE" id="id_{{ document.empty_form.prefix }}-DELETE" class="hidden">
+      </p>
+  </div>
+  <div class="empty-spare hidden">
+      <p class="pl-30" spare="">
+        {{ spares.empty_form.id }}
+        {{ spares.empty_form.spare.errors }}
+        {{ spares.empty_form.spare.as_hidden }}
+         <a class="delete-item"></a>
+        <input type="checkbox" name="{{ spares.empty_form.prefix }}-DELETE" id="id_{{ spares.empty_form.prefix }}-DELETE" class="hidden">
+      </p>
+  </div>
+</section>
+{% endblock content %}
+{% block pagescripts %}
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+<script type="module" src="{% static 'js/apps_edit.js' %}"></script>
+{% endblock %}

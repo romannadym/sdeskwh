@@ -1,0 +1,133 @@
+{% extends 'admin/menu.html' %}
+{% load static %}
+{% block title %}Администрирование{% endblock title %}
+{% block pagecss %}
+  {% if search %}
+    <link rel="stylesheet" type="text/css" href="{% static 'django_select2/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'django_select2/django_select2.css' %}">
+  {% endif %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/edit_user.css' %}">
+{% endblock %}
+{% block page-title %}Редактирование{% endblock page-title %}
+{% block admin-content %}
+  <div class="justify-center">
+    <div class="form">
+      <div class="justify-right">
+        <a class="btn red-btn" href="{% url delete_link form.instance.id %}">Удалить</a>
+      </div>
+      <form method="PUT" action="{% url 'api-edit-user' form.instance.id %}">
+        {% csrf_token %}
+        <div>
+          <label for="id_password">Пароль:</label>
+          <a class="btn small-light-btn" href="{% url 'admin-change-password' form.instance.id link %}">Изменить</a>
+        </div>
+        <div>
+          {{ form.email.label_tag }}
+          {{ form.email.errors }}
+          {{ form.email }}
+          <p class="help-text">{{ form.email.help_text|safe }}</p>
+        </div>
+        <div>
+          {{ form.organization.label_tag }}
+          {{ form.organization.errors }}
+          {{ form.organization }}
+        </div>
+        <div>
+          {{ form.last_name.label_tag }}
+          {{ form.last_name.errors }}
+          {{ form.last_name }}
+        </div>
+        <div>
+          {{ form.first_name.label_tag }}
+          {{ form.first_name.errors }}
+          {{ form.first_name }}
+        </div>
+        <div>
+          {{ form.is_superuser.label_tag }}
+          {{ form.is_superuser.errors }}
+          {{ form.is_superuser }}
+          <p class="help-text">{{ form.is_superuser.help_text|safe }}</p>
+        </div>
+        <div>
+          {{ form.is_staff.label_tag }}
+          {{ form.is_staff.errors }}
+          {{ form.is_staff }}
+          <p class="help-text">{{ form.is_staff.help_text|safe }}</p>
+        </div>
+        <div>
+          {{ form.is_active.label_tag }}
+          {{ form.is_active.errors }}
+          {{ form.is_active }}
+          <p class="help-text">{{ form.is_active.help_text|safe }}</p>
+        </div>
+        <div>
+          {{ form.groups.label_tag }}
+          {{ form.groups.errors }}
+          <ul id="groups">
+            {% for group in groups %}
+              <li>
+                <input type="checkbox" name="group-{{ group.id }}" {% if group.contains %}checked="checked"{% endif %}> {{ group.name }}
+              </li>
+            {% endfor %}
+          </ul>
+          {% comment %}
+          <div class="justify-between">
+            <div>
+              <select id="groups" multiple class="groups">
+                {% for group in groups %}
+                  <option value="{{ group.id }}">{{ group.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="flex-column">
+              <a class="btn small-light-btn to-the-right">>></a>
+              <a class="btn small-light-btn to-the-left"><<</a>
+            </div>
+            <div>
+              <select id="id_groups" multiple name="groups">
+                {% for group in form.groups.field.choices %}
+                  <option value="{{ group.0 }}" selected>{{ group.1 }}</option>
+                {% endfor %}
+              </select>
+              <p class="help-text">{{ form.groups.help_text|safe }}</p>
+            </div>
+          </div>
+          {% endcomment %}
+        </div>
+        <div>
+          {{ form.inn.label_tag }}
+          {{ form.inn.errors }}
+          {{ form.inn }}
+        </div>
+        <div>
+          {{ form.address.label_tag }}
+          {{ form.address.errors }}
+          {{ form.address }}
+        </div>
+        <div>
+          {{ form.phone.label_tag }}
+          {{ form.phone.errors }}
+          {{ form.phone }}
+        </div>
+        <div>
+          {{ form.telegram.label_tag }}
+          {{ form.telegram.errors }}
+          {{ form.telegram }}
+        </div>
+        <div class="justify-center">
+          <button type="submit" class="btn dark-btn">Отправить</button>
+          <a href="{% url link %}" class="btn light-btn">Отмена</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock admin-content %}
+{% block pagescripts %}
+  {% comment %}<script type="text/javascript" src="{% static 'js/admin/edit_choices.js' %}"></script>{% endcomment %}
+  <script type="module" src="{% static 'js/admin/edit_user.js' %}"></script>
+{% if search %}
+  <script src="{% static 'django_select2/jquery.min.js' %}"></script>
+  <script src="{% static 'django_select2/select2.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'django_select2/django_select2.js' %}"></script>
+{% endif %}
+{% endblock pagescripts %}

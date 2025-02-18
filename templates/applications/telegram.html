@@ -1,0 +1,32 @@
+{% if type == 'add' %}
+Заявка № {{ id }} создана.
+{% elif type == 'edit' %}
+Статус заявки № {{ id }} изменен на "{{ status.name }}".
+{% elif type == 'comment' %}
+Добавлен комментарий к заявке № {{ id|safe }}.
+"{{ status }}"
+Пользователь: {{ author }}
+{% elif type == 'comment_edit' %}
+Изменен комментарий к заявке № {{ id|safe }}.
+"{{ status }}"
+Пользователь: {{ author }}
+{% elif type == 'comment_delete' %}
+Удален комментарий к заявке № {{ id|safe }}.
+"{{ status }}"
+Пользователь: {{ author }}
+{% elif type == 'spare' %}
+Списание запчасти "{{ status }}" по заявке № {{ id }}.
+{% elif type == 'return' %}
+Возврат запчасти "{{ status }}" по заявке № {{ id }}.
+{% elif type == 'priority' %}
+Приоритет заявки № {{ id }} изменен на "{{ status|default_if_none:'' }}".
+{% elif type == 'engineer' %}
+Назначен инженер "{{ status|default_if_none:'' }}" для заявки № {{ id }}.
+{% elif type == 'to_work' %}
+Заявка № {{ id }} возвращена в работу.
+{% endif %}
+{% if type == 'delete' %}
+Заявка № {{ id }} удалена администратором.
+{% else %}
+Актуальная информация о заявке доступна по адресу {{ url }}
+{% endif %}

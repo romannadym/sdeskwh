@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Редактирование элемента{% endblock title %}
+
+{% block page-title %}Редактирование элемента{% endblock page-title %}
+{% block content %}
+<section>
+  <div class="container">
+    <div class="justify-center">
+      <div class="form">
+        <form method="{{ method }}" {% if files %}enctype="multipart/form-data"{% endif %} action="{{ action }}">
+          {{ form.as_p }}
+          <div class="justify-center">
+            <button type="submit" class="btn dark-btn">Отправить</button>
+            <a href="{{ link }}" class="btn light-btn">Отмена</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
+{% block pagescripts %}
+  {% if media %}
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+  {% endif %}
+  <script type="module" src="{% static 'js/forms/edit.js' %}"></script>
+{% endblock pagescripts %}

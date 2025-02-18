@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Список контактов{% endblock title %}
+
+{% block page-title %}Список контактов{% endblock page-title %}
+
+{% block content %}
+<section>
+  <div class="container block-content">
+    <a class="back-link" href="{% url 'app-list' %}">Назад</a>
+    <div class="align-right"><a class="add-item" href="{% url 'add-contact' %}"> Добавить контактное лицо</a></div>
+    <div class="tab-contracts">
+    <ol>
+      {% for contact in contacts %}
+        <li>
+          <a href="{% url 'edit-contact' contact.id %}">{{ contact.fio }}</a>
+        </li>
+      {% endfor %}
+    </ol>
+    </div>
+  </div>
+</section>
+{% endblock content %}
